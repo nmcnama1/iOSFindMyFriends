@@ -194,6 +194,11 @@
 					AE065D431DAB3BE80017FCC4 = {
 						CreatedOnToolsVersion = 8.0;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					AE065D571DAB3BEC0017FCC4 = {
 						CreatedOnToolsVersion = 8.0;
@@ -503,6 +508,7 @@
 				AE065D6E1DAB3BEC0017FCC4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		AE065D6F1DAB3BEC0017FCC4 /* Build configuration list for PBXNativeTarget "HelloWorldTests" */ = {
 			isa = XCConfigurationList;
@@ -511,6 +517,7 @@
 				AE065D711DAB3BEC0017FCC4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		AE065D721DAB3BEC0017FCC4 /* Build configuration list for PBXNativeTarget "HelloWorldUITests" */ = {
 			isa = XCConfigurationList;
@@ -519,6 +526,7 @@
 				AE065D741DAB3BEC0017FCC4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
