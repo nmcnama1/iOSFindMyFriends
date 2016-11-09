@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreLocation
 
 class ViewController: UIViewController, UITextFieldDelegate {
     
@@ -15,6 +16,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var topLabel: UILabel!
+    @IBOutlet weak var locationInfo: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,5 +49,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func changeLabelText(_ sender: UIButton) {
         topLabel.text = "tester"
+    }
+    @IBAction func updateLocation(_ sender: UIButton) {
     }
 }
