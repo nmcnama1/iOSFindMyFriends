@@ -85,7 +85,7 @@ class AccountCreationViewController: UIViewController {
                     alertController.addAction(defaultAction)
                     
                     //self.present(alertController, animated: true, completion: nil)
-                    self.performSegue(withIdentifier: "creationToLoginSegue", sender: self)
+                    self.performSegue(withIdentifier: "AccounttoMapSegue", sender: self)
                 }
                 else
                 {

@@ -57,6 +57,7 @@ class ViewController: UIViewController {
                     self.UsernameLabel.text = user!.email
                     self.emailField.text = ""
                     self.passwordField.text = ""
+                    self.performSegue(withIdentifier: "SuccessfulLoginSegue", sender: self)                    
                 }
                 else
                 {

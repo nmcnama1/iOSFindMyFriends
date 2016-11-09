@@ -8,7 +8,8 @@ target 'firebaseTest' do
   # Pods for firebaseTest
   pod 'Firebase'
   pod 'Firebase/Auth'
-
+  pod 'GoogleMaps'
+  pod 'GooglePlaces'
 
   target 'firebaseTestTests' do
     inherit! :search_paths

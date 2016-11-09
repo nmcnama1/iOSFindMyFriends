@@ -1,20 +1,20 @@
 //
-//  ViewController.swift
-//  TestingGoogleMaps
+//  MapHomeViewController.swift
+//  firebaseTest
 //
 //  Created by Nancy Ann on 11/9/16.
-//  Copyright © 2016 Just me. All rights reserved.
+//  Copyright © 2016 SEGroup1. All rights reserved.
 //
 
 import UIKit
 import GoogleMaps
 
-class ViewController: UIViewController {
+class MapHomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        
+
+        // Do any additional setup after loading the view.
         // Create a GMSCameraPosition that tells the map to display the
         // coordinate -33.86,151.20 at zoom level 6.
         let camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 1.0)
@@ -38,7 +38,16 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
 
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+    }
+    */
 
 }
-
