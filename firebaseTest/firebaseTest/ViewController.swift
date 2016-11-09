@@ -72,41 +72,6 @@ class ViewController: UIViewController {
         
     }
     
-    //THIS IS CREATE ACCOUNT CODE
-    @IBAction func loginAction(_ sender: AnyObject)
-    {
-        if self.emailField.text == "" || self.passwordField.text == ""
-        {
-            let alertController = UIAlertController(title: "Oops", message: "Please enter an email and password", preferredStyle: .alert)
-            
-            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(defaultAction)
-            
-            self.present(alertController, animated: true, completion: nil)
-        }
-        else
-        {
-            FIRAuth.auth()?.createUser(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: { (user, error) in
-                if error == nil
-                {
-                    self.logoutButton.alpha = 1.0
-                    self.UsernameLabel.text = user!.email
-                    self.emailField.text = ""
-                    self.passwordField.text = ""
-                }
-                else
-                {
-                    let alertController = UIAlertController(title: "Oops", message: error?.localizedDescription, preferredStyle: .alert)
-                    
-                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                    alertController.addAction(defaultAction)
-                    
-                    self.present(alertController, animated: true, completion: nil)
-                }
-            })
-        }
-    }
-    
     //Logout of current user
     @IBAction func logoutAction(_ sender: AnyObject) {
         try! FIRAuth.auth()?.signOut()

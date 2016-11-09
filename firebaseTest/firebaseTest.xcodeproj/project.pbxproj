@@ -17,6 +17,7 @@
 		D14242611DCA33BD00ACFA3B /* firebaseTestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14242601DCA33BD00ACFA3B /* firebaseTestTests.swift */; };
 		D142426C1DCA33BD00ACFA3B /* firebaseTestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D142426B1DCA33BD00ACFA3B /* firebaseTestUITests.swift */; };
 		D14787681DCCC81D00D815F0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D14787671DCCC81D00D815F0 /* GoogleService-Info.plist */; };
+		D15D11F01DD2562000D9363A /* AccountCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15D11EF1DD2562000D9363A /* AccountCreationViewController.swift */; };
 		D1B242FD5D3F05DEB12C3E77 /* Pods_firebaseTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17B426622B77A42A5ED74DCB /* Pods_firebaseTest.framework */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +61,7 @@
 		D142426B1DCA33BD00ACFA3B /* firebaseTestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = firebaseTestUITests.swift; sourceTree = "<group>"; };
 		D142426D1DCA33BD00ACFA3B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D14787671DCCC81D00D815F0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D15D11EF1DD2562000D9363A /* AccountCreationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreationViewController.swift; sourceTree = "<group>"; };
 		FDB49A78EF85FF52AA2D7F07 /* Pods_firebaseTestUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_firebaseTestUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -132,6 +134,7 @@
 				D142424B1DCA33BD00ACFA3B /* AppDelegate.swift */,
 				D142424D1DCA33BD00ACFA3B /* ViewController.swift */,
 				D142424F1DCA33BD00ACFA3B /* Main.storyboard */,
+				D15D11EF1DD2562000D9363A /* AccountCreationViewController.swift */,
 				D14242521DCA33BD00ACFA3B /* Assets.xcassets */,
 				D14242541DCA33BD00ACFA3B /* LaunchScreen.storyboard */,
 				D14242571DCA33BD00ACFA3B /* Info.plist */,
@@ -452,6 +455,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D142424E1DCA33BD00ACFA3B /* ViewController.swift in Sources */,
+				D15D11F01DD2562000D9363A /* AccountCreationViewController.swift in Sources */,
 				D142424C1DCA33BD00ACFA3B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
