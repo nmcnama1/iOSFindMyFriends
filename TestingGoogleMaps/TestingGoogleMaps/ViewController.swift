@@ -27,6 +27,11 @@ class ViewController: UIViewController {
         marker.title = "Sydney"
         marker.snippet = "Australia"
         marker.map = mapView
+        let marker2 = GMSMarker();
+        marker2.position = CLLocationCoordinate2D(latitude: 38.897678, longitude: -77.036517)
+        marker2.title = "White"
+        marker2.snippet = "House"
+        marker2.map = mapView
     }
 
     override func didReceiveMemoryWarning() {
