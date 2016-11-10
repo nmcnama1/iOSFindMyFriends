@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseDatabase
 
 class ViewController: UIViewController {
 
@@ -18,6 +19,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var accountButton: UIButton!
     
+    let ref = FIRDatabase.database().reference(withPath: "data")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,6 +102,11 @@ class ViewController: UIViewController {
         self.loginButton.alpha = 1.0
         self.accountButton.alpha = 1.0    }
     
+    //Testing sending info to Firebase
+    @IBAction func sendLocAction(_ sender: AnyObject) {
+        let user = FIRAuth.auth()?.currentUser
+        self.ref.child("locations").child((user?.uid)!).setValue("TEST")
+    }
 
 }
 

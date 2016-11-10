@@ -8,6 +8,7 @@ target 'firebaseTest' do
   # Pods for firebaseTest
   pod 'Firebase'
   pod 'Firebase/Auth'
+  pod 'Firebase/Database'
   pod 'GoogleMaps'
   pod 'GooglePlaces'
 
