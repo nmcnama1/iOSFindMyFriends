@@ -23,6 +23,7 @@ class ViewController: UIViewController {
         {
             self.logoutButton.alpha = 1.0
             self.UsernameLabel.text = user.email
+            self.performSegue(withIdentifier: "SuccessfulLoginSegue", sender: self)
         }
         else
         {

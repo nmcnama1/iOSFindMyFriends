@@ -8,6 +8,8 @@
 
 import UIKit
 import GoogleMaps
+import Firebase
+
 
 class MapHomeViewController: UIViewController {
 
@@ -19,8 +21,8 @@ class MapHomeViewController: UIViewController {
         // coordinate -33.86,151.20 at zoom level 6.
         let camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 1.0)
         let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
-        mapView.isMyLocationEnabled = true
         view = mapView
+        mapView.isMyLocationEnabled = true
         // Creates a marker in the center of the map.
         let marker = GMSMarker()
         marker.position = CLLocationCoordinate2D(latitude: -33.86, longitude: 151.20)
@@ -32,6 +34,14 @@ class MapHomeViewController: UIViewController {
         marker2.title = "White"
         marker2.snippet = "House"
         marker2.map = mapView
+        mapView.isMyLocationEnabled = true
+        if let mylocation = mapView.myLocation {
+            print("User's location: \(mylocation)")
+        } else {
+            let alertController = UIAlertController(title: "Error", message: "Location is null", preferredStyle: UIAlertControllerStyle.alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alertController, animated: true, completion: nil)
+        }
     }
 
     override func didReceiveMemoryWarning() {
