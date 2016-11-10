@@ -15,6 +15,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var logoutButton: UIButton!
+    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var accountButton: UIButton!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +26,12 @@ class ViewController: UIViewController {
         {
             self.logoutButton.alpha = 1.0
             self.UsernameLabel.text = user.email
-        }
+            self.emailField.alpha = 0.0
+            self.passwordField.alpha = 0.0
+            self.loginButton.alpha = 0.0
+            self.accountButton.alpha = 0.0
+            
+            self.performSegue(withIdentifier: "SuccessfulLoginSegue", sender: self)         }
         else
         {
             self.logoutButton.alpha = 0.0
@@ -57,6 +65,12 @@ class ViewController: UIViewController {
                     self.UsernameLabel.text = user!.email
                     self.emailField.text = ""
                     self.passwordField.text = ""
+                    
+                    self.emailField.alpha = 0.0
+                    self.passwordField.alpha = 0.0
+                    self.loginButton.alpha = 0.0
+                    self.accountButton.alpha = 0.0
+                    
                     self.performSegue(withIdentifier: "SuccessfulLoginSegue", sender: self)                    
                 }
                 else
@@ -81,7 +95,10 @@ class ViewController: UIViewController {
         self.logoutButton.alpha = 0.0
         self.emailField.text = ""
         self.passwordField.text = ""
-    }
+        self.emailField.alpha = 1.0
+        self.passwordField.alpha = 1.0
+        self.loginButton.alpha = 1.0
+        self.accountButton.alpha = 1.0    }
     
 
 }
