@@ -75,6 +75,17 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t6F-Vv-U4A">
+                                <frame key="frameInset" minX="148" minY="477" width="78" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.92433181821548549" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Locations">
+                                    <color key="titleColor" red="0.059861747379999997" green="0.05800411212" blue="0.057883979549999999" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="sCG-gz-wcb" kind="show" id="qfI-S7-x9w"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.99675561781187383" green="0.98165443938579378" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -157,6 +168,34 @@
             </objects>
             <point key="canvasLocation" x="1724" y="123.68815592203899"/>
         </scene>
+        <!--Location Table View Controller-->
+        <scene sceneID="zPf-5N-vGh">
+            <objects>
+                <tableViewController id="sCG-gz-wcb" customClass="LocationTableViewController" customModule="firebaseTest" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="D9H-Qg-O1Q">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="locCell" id="Sby-bP-2z3">
+                                <rect key="frame" x="0.0" y="92" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Sby-bP-2z3" id="QVt-cW-F5b">
+                                    <frame key="frameInset" width="375" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="sCG-gz-wcb" id="GUe-S9-Lsd"/>
+                            <outlet property="delegate" destination="sCG-gz-wcb" id="Puk-VD-dgs"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="juU-ID-8ZC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1052" y="922"/>
+        </scene>
         <!--Map Home View Controller-->
         <scene sceneID="qfo-pz-h2a">
             <objects>
@@ -181,7 +220,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1NW-yq-F8e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1344.8" y="831.63418290854577"/>
+            <point key="canvasLocation" x="1724" y="922"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="X0p-yO-eVn">

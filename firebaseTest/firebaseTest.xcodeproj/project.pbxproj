@@ -19,6 +19,7 @@
 		D142426C1DCA33BD00ACFA3B /* firebaseTestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D142426B1DCA33BD00ACFA3B /* firebaseTestUITests.swift */; };
 		D14787681DCCC81D00D815F0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D14787671DCCC81D00D815F0 /* GoogleService-Info.plist */; };
 		D15D11F01DD2562000D9363A /* AccountCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15D11EF1DD2562000D9363A /* AccountCreationViewController.swift */; };
+		D18849C61DDB965200FB0698 /* LocationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18849C51DDB965200FB0698 /* LocationTableViewController.swift */; };
 		D1B242FD5D3F05DEB12C3E77 /* Pods_firebaseTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17B426622B77A42A5ED74DCB /* Pods_firebaseTest.framework */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +65,7 @@
 		D142426D1DCA33BD00ACFA3B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D14787671DCCC81D00D815F0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D15D11EF1DD2562000D9363A /* AccountCreationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreationViewController.swift; sourceTree = "<group>"; };
+		D18849C51DDB965200FB0698 /* LocationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationTableViewController.swift; sourceTree = "<group>"; };
 		FDB49A78EF85FF52AA2D7F07 /* Pods_firebaseTestUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_firebaseTestUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -142,6 +144,7 @@
 				D14242541DCA33BD00ACFA3B /* LaunchScreen.storyboard */,
 				D14242571DCA33BD00ACFA3B /* Info.plist */,
 				D14787671DCCC81D00D815F0 /* GoogleService-Info.plist */,
+				D18849C51DDB965200FB0698 /* LocationTableViewController.swift */,
 			);
 			path = firebaseTest;
 			sourceTree = "<group>";
@@ -460,6 +463,7 @@
 				AEC5C80B1DD378DE001D16D1 /* MapHomeViewController.swift in Sources */,
 				D142424E1DCA33BD00ACFA3B /* ViewController.swift in Sources */,
 				D15D11F01DD2562000D9363A /* AccountCreationViewController.swift in Sources */,
+				D18849C61DDB965200FB0698 /* LocationTableViewController.swift in Sources */,
 				D142424C1DCA33BD00ACFA3B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
