@@ -9,14 +9,19 @@
 import UIKit
 import GoogleMaps
 import Firebase
+import CoreLocation
 
 
-class MapHomeViewController: UIViewController {
-    //let locationManager = CLLocationManager()
+class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
+    var locationManager = CLLocationManager()
+    
+    var didFindMyLocation = false
     override func viewDidLoad() {
         super.viewDidLoad()
-        //locationManager.delegate = self
-        //locationManager.requestWhenInUseAuthorization()
+        
+        self.locationManager.delegate = self
+        self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.startUpdatingLocation()
         
         // Do any additional setup after loading the view.
         // Create a GMSCameraPosition that tells the map to display the
@@ -49,6 +54,12 @@ class MapHomeViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let location = locations.last
+        print("CMON")
+        print(location)
     }
     
     @IBAction func logoutAction(_ sender: AnyObject) {
