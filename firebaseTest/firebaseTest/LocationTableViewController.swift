@@ -13,16 +13,22 @@ import FirebaseDatabase
 class LocationTableViewController: UITableViewController {
     var  locs = [String]()
     let ref = FIRDatabase.database().reference(withPath: "data")
+    var newLocs = [String]();
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        newLocs = []
         ref.child("locations").observe(FIRDataEventType.value, with: { (snapshot) in
             let dict = snapshot.value as? [String : AnyObject] ?? [:]
-            for (key, value) in dict{
-                self.locs.append(key + ": " + (value as! String));
+            for item in dict{
+                self.newLocs.append(item.key);
             }
-        })        //self.locs = ["Hi", "Hello", "Howdy"];
+            self.locs = self.newLocs;
+            self.tableView.reloadData();
+        })
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -47,7 +53,7 @@ class LocationTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "locCell", for: indexPath)
 
         // Configure the cell...
-        cell.textLabel!.text = locs[indexPath.row]
+        cell.textLabel!.text = self.locs[indexPath.row]
         return cell
     }
     
