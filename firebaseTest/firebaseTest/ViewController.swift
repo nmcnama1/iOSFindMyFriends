@@ -24,6 +24,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         if let user = FIRAuth.auth()?.currentUser
         {
             self.logoutButton.alpha = 1.0
@@ -105,7 +106,7 @@ class ViewController: UIViewController {
     //Testing sending info to Firebase
     @IBAction func sendLocAction(_ sender: AnyObject) {
         let user = FIRAuth.auth()?.currentUser
-        self.ref.child("locations").child((user?.uid)!).setValue(["lat": "20.43", "long":"5.11"])
+        self.ref.child("locations").child((user?.uid)!).setValue(["lat": "20.43", "lng":"5.11"])
     }
     
 

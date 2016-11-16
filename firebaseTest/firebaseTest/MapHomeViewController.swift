@@ -9,11 +9,14 @@
 import UIKit
 import GoogleMaps
 import Firebase
+import FirebaseDatabase
 import CoreLocation
 
 
 class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
     var locationManager = CLLocationManager()
+    let ref = FIRDatabase.database().reference(withPath: "data")
+    var newLocs = [String]();
     
     var didFindMyLocation = false
     override func viewDidLoad() {
@@ -30,25 +33,29 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
         let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         view = mapView
         mapView.isMyLocationEnabled = true
-        // Creates a marker in the center of the map.
-        let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: -33.86, longitude: 151.20)
-        marker.title = "Sydney"
-        marker.snippet = "Australia"
-        marker.map = mapView
-        let marker2 = GMSMarker();
-        marker2.position = CLLocationCoordinate2D(latitude: 38.897678, longitude: -77.036517)
-        marker2.title = "White"
-        marker2.snippet = "House"
-        marker2.map = mapView
-        mapView.isMyLocationEnabled = true
+        mapView.settings.myLocationButton = true
+
+        //marker2.snippet = "House"
+
         if let mylocation = mapView.myLocation {
             print("User's location: \(mylocation)")
-        } else {
+        } /*else {
             let alertController = UIAlertController(title: "Error", message: "Location is null", preferredStyle: UIAlertControllerStyle.alert)
             alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
             self.present(alertController, animated: true, completion: nil)
-        }
+        }*/
+        newLocs = []
+        ref.child("locations").observe(FIRDataEventType.value, with: { (snapshot) in
+            let dict = snapshot.value as? [String : AnyObject] ?? [:]
+            for (key, value) in dict {
+                let marker = GMSMarker()
+                marker.position = CLLocationCoordinate2D(latitude: ((value["lat"] as! String) as NSString).doubleValue, longitude: ((value["lng"] as! String) as NSString).doubleValue)
+                marker.title=key
+                marker.map = mapView
+              //  print((value["lat"] as! String))
+                self.newLocs.append((value["lat"] as! String));
+            }
+        })
     }
 
     override func didReceiveMemoryWarning() {
@@ -58,7 +65,6 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations.last
-        print("CMON")
         print(location)
     }
     
