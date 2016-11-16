@@ -12,10 +12,12 @@ import Firebase
 
 
 class MapHomeViewController: UIViewController {
-
+    //let locationManager = CLLocationManager()
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        //locationManager.delegate = self
+        //locationManager.requestWhenInUseAuthorization()
+        
         // Do any additional setup after loading the view.
         // Create a GMSCameraPosition that tells the map to display the
         // coordinate -33.86,151.20 at zoom level 6.
