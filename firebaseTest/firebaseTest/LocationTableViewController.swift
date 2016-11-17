@@ -20,12 +20,12 @@ class LocationTableViewController: UITableViewController {
         
         newLocs = []
         ref.child("locations").observe(FIRDataEventType.value, with: { (snapshot) in
-            print(snapshot.value)
-            let dict = snapshot.value as? [String : [String : Double]] ?? [:]
-            for (key, value) in dict {
-                print(key)
-       //         self.newLocs.append((value["lng"] as! String));
+            let dict = snapshot.value as? [String : AnyObject] ?? [:]
+
+            for item in dict {
+                self.newLocs.append(item.value.object(forKey:"lat") as! String);
             }
+
             self.locs = self.newLocs;
             self.tableView.reloadData();
         })

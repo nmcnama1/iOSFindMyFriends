@@ -44,16 +44,17 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
             alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
             self.present(alertController, animated: true, completion: nil)
         }*/
-        newLocs = []
+        
         ref.child("locations").observe(FIRDataEventType.value, with: { (snapshot) in
             let dict = snapshot.value as? [String : AnyObject] ?? [:]
-            for (key, value) in dict {
+            for item in dict {
                 let marker = GMSMarker()
-                marker.position = CLLocationCoordinate2D(latitude: ((value["lat"] as! String) as NSString).doubleValue, longitude: ((value["lng"] as! String) as NSString).doubleValue)
-                marker.title=key
+                print(item.value.object(forKey:"lat"))
+                print(Double(item.value.object(forKey:"lng") as! String))
+
+                marker.position = CLLocationCoordinate2D( latitude: Double(item.value.object(forKey:"lat") as! String)!, longitude: Double(item.value.object(forKey:"lng") as! String)! )
+                marker.title=(item.value.object(forKey:"name") as! String)
                 marker.map = mapView
-              //  print((value["lat"] as! String))
-                self.newLocs.append((value["lat"] as! String));
             }
         })
     }
