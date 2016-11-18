@@ -15,6 +15,8 @@ import CoreLocation
 
 class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
     var locationManager = CLLocationManager()
+    var latPassed = "0.00"
+    var lngPassed = "0.00"
     let ref = FIRDatabase.database().reference(withPath: "data")
     var newLocs = [String]();
     

@@ -10,20 +10,35 @@ import UIKit
 import Firebase
 import FirebaseDatabase
 
+struct info {
+    var name = ""
+    var id = ""
+    var lat = "0.00"
+    var lng = "0.00"
+}
+
 class LocationTableViewController: UITableViewController {
-    var  locs = [String]()
+    var  locs = [info]()
     let ref = FIRDatabase.database().reference(withPath: "data")
-    var newLocs = [String]();
+    var newLocs = [info]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        newLocs = []
+        newLocs = [info]()
         ref.child("locations").observe(FIRDataEventType.value, with: { (snapshot) in
             let dict = snapshot.value as? [String : AnyObject] ?? [:]
 
             for item in dict {
-                self.newLocs.append(item.value.object(forKey:"lat") as! String);
+                let lat = (item.value.object(forKey:"lat") as! String);
+                let lng = (item.value.object(forKey:"lng") as! String);
+                let name = (item.value.object(forKey:"name") as! String);
+            
+                var inform = info()
+                inform.name = name
+                inform.lat = lat
+                inform.lng = lng
+                self.newLocs.append(inform);
             }
 
             self.locs = self.newLocs;
@@ -55,11 +70,21 @@ class LocationTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "locCell", for: indexPath)
 
         // Configure the cell...
-        cell.textLabel!.text = self.locs[indexPath.row]
+        cell.textLabel!.text = self.locs[indexPath.row].name + ": (" + self.locs[indexPath.row].lat + ", " + self.locs[indexPath.row].lng + ")"
         return cell
     }
     
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        //var myVC = storyboard?.instantiateViewController(withIdentifier: "MapHomeViewController") as! MapHomeViewController
+       // myVC.latPassed = self.locs[indexPath.row].lat
+       // myVC.lngPassed = self.locs[indexPath.row].lng
+       // navigationController?.pushViewController(myVC, animated: true)
+        
+        self.performSegue(withIdentifier: "tableToMapSegue", sender: self)
+    }
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
