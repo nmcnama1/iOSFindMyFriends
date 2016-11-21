@@ -134,7 +134,6 @@ class LocationTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
         print("HEY")
         let destinationVC = segue.destination as? MapHomeViewController
-  //      destinationVC?.numberToDisplay = 20
         destinationVC?.latPassed=self.passLat
         destinationVC?.lngPassed=self.passLong
         destinationVC?.namePassed=self.passName

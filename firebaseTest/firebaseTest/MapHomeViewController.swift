@@ -15,11 +15,13 @@ import CoreLocation
 
 class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
     var locationManager = CLLocationManager()
-    var latPassed = 0.00
-    var lngPassed = 0.00
+    var latPassed = 40.759211
+    var lngPassed = -73.984638
     var namePassed = "test"
     let ref = FIRDatabase.database().reference(withPath: "data")
     var newLocs = [String]()
+    var currentLat = 0.00
+    var currentLng = 0.00
 
     
     var didFindMyLocation = false
@@ -37,7 +39,7 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
         let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         view = mapView
         mapView.isMyLocationEnabled = true
-        mapView.settings.myLocationButton = true
+//        mapView.settings.myLocationButton = true
 
         //marker2.snippet = "House"
 
@@ -51,7 +53,6 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
         
         ref.child("locations").observe(FIRDataEventType.value, with: { (snapshot) in
             let dict = snapshot.value as? [String : AnyObject] ?? [:]
-            var count = 1
             for item in dict {
                 let marker = GMSMarker()
     //            print(item.value.object(forKey:"lat"))
@@ -63,9 +64,20 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
                 if ((item.value.object(forKey:"name") as! String) == self.namePassed) {
                     mapView.selectedMarker=marker
                 }
-                count+=1
             }
-            print("asfas")
+            
+            let button = UIButton(frame: CGRect(x: 5, y: self.view.frame.size.height - 55, width: 100, height: 50))
+            button.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+            button.setTitle("Check in", for: .normal)
+            button.addTarget(self, action: #selector(MapHomeViewController.sendLocAction), for: UIControlEvents.touchUpInside)
+            
+            let button2 = UIButton(frame: CGRect(x: self.view.frame.size.width - 105, y: self.view.frame.size.height - 55, width: 100, height: 50))
+            button2.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+            button2.setTitle("Friends", for: .normal)
+            button2.addTarget(self, action: #selector(MapHomeViewController.goToFriends), for: UIControlEvents.touchUpInside)
+            self.view.addSubview(button)
+            self.view.addSubview(button2)
+
         })
       
         /*
@@ -76,6 +88,7 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
         print(distanceInMeters)
         print("asdfasdf")
         */
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -84,11 +97,14 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let location = locations.last
-        print(location)
+    //    let lat = locations.last?.coordinate.latitude
+   //     print(location!)
+        self.currentLat=(locations.last?.coordinate.latitude)!
+        self.currentLng=(locations.last?.coordinate.longitude)!
     }
     
-    @IBAction func logoutAction(_ sender: AnyObject) {
+     func logoutAction(_ sender: AnyObject) {
+        try! FIRAuth.auth()?.signOut()
         
     }
 
@@ -101,5 +117,14 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    func goToFriends(){
+        self.performSegue(withIdentifier: "MaptoTableSegue", sender: self)
+    }
+    
+    @IBAction func sendLocAction(_ sender: AnyObject) {
+        let user = FIRAuth.auth()?.currentUser
+        self.ref.child("locations").child((user?.uid)!).setValue(["lat": String(self.currentLat), "lng":String(currentLng), "name": "Spike"])
+    }
 
 }
