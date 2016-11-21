@@ -15,10 +15,12 @@ import CoreLocation
 
 class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
     var locationManager = CLLocationManager()
-    var latPassed = "0.00"
-    var lngPassed = "0.00"
+    var latPassed = 0.00
+    var lngPassed = 0.00
+    var namePassed = "test"
     let ref = FIRDatabase.database().reference(withPath: "data")
-    var newLocs = [String]();
+    var newLocs = [String]()
+
     
     var didFindMyLocation = false
     override func viewDidLoad() {
@@ -31,7 +33,7 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
         // Do any additional setup after loading the view.
         // Create a GMSCameraPosition that tells the map to display the
         // coordinate -33.86,151.20 at zoom level 6.
-        let camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 1.0)
+        let camera = GMSCameraPosition.camera(withLatitude: self.latPassed, longitude: self.lngPassed, zoom: 6.904)
         let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         view = mapView
         mapView.isMyLocationEnabled = true
@@ -49,16 +51,31 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
         
         ref.child("locations").observe(FIRDataEventType.value, with: { (snapshot) in
             let dict = snapshot.value as? [String : AnyObject] ?? [:]
+            var count = 1
             for item in dict {
                 let marker = GMSMarker()
-                print(item.value.object(forKey:"lat"))
-                print(Double(item.value.object(forKey:"lng") as! String))
+    //            print(item.value.object(forKey:"lat"))
+             //   print(Double(item.value.object(forKey:"lng") as! String))
 
                 marker.position = CLLocationCoordinate2D( latitude: Double(item.value.object(forKey:"lat") as! String)!, longitude: Double(item.value.object(forKey:"lng") as! String)! )
                 marker.title=(item.value.object(forKey:"name") as! String)
                 marker.map = mapView
+                if ((item.value.object(forKey:"name") as! String) == self.namePassed) {
+                    mapView.selectedMarker=marker
+                }
+                count+=1
             }
+            print("asfas")
         })
+      
+        /*
+        let coordinate₀ = CLLocation(latitude: 5.0, longitude: 5.0)
+        let coordinate₁ = CLLocation(latitude: 5.0, longitude: 3.0)
+        
+        let distanceInMeters = coordinate₀.distance(from: coordinate₁)
+        print(distanceInMeters)
+        print("asdfasdf")
+        */
     }
 
     override func didReceiveMemoryWarning() {

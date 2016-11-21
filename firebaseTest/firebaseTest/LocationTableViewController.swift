@@ -21,6 +21,9 @@ class LocationTableViewController: UITableViewController {
     var  locs = [info]()
     let ref = FIRDatabase.database().reference(withPath: "data")
     var newLocs = [info]()
+    var passLat = 0.00
+    var passLong = 0.00
+    var passName = "test"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,9 +80,11 @@ class LocationTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        //var myVC = storyboard?.instantiateViewController(withIdentifier: "MapHomeViewController") as! MapHomeViewController
-       // myVC.latPassed = self.locs[indexPath.row].lat
-       // myVC.lngPassed = self.locs[indexPath.row].lng
+   //     var myVC = storyboard?.instantiateViewController(withIdentifier: "MapHomeViewController") as! MapHomeViewController
+        self.passLat = Double(self.locs[indexPath.row].lat)!
+        self.passLong = Double(self.locs[indexPath.row].lng)!
+        self.passName = self.locs[indexPath.row].name
+        
        // navigationController?.pushViewController(myVC, animated: true)
         
         self.performSegue(withIdentifier: "tableToMapSegue", sender: self)
@@ -120,14 +125,20 @@ class LocationTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        print("HEY")
+        let destinationVC = segue.destination as? MapHomeViewController
+  //      destinationVC?.numberToDisplay = 20
+        destinationVC?.latPassed=self.passLat
+        destinationVC?.lngPassed=self.passLong
+        destinationVC?.namePassed=self.passName
     }
-    */
+    
 
 }
