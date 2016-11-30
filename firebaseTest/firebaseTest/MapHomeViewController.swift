@@ -53,19 +53,18 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
         
         ref.child("locations").observe(FIRDataEventType.value, with: { (snapshot) in
             let dict = snapshot.value as? [String : AnyObject] ?? [:]
+            
             for item in dict {
                 let marker = GMSMarker()
-    //            print(item.value.object(forKey:"lat"))
-             //   print(Double(item.value.object(forKey:"lng") as! String))
-
-                marker.position = CLLocationCoordinate2D( latitude: Double(item.value.object(forKey:"lat") as! String)!, longitude: Double(item.value.object(forKey:"lng") as! String)! )
-                marker.title=(item.value.object(forKey:"name") as! String)
-                marker.map = mapView
-                if ((item.value.object(forKey:"name") as! String) == self.namePassed) {
-                    mapView.selectedMarker=marker
+                if ( item.value.object(forKey:"name") != nil  && item.value.object(forKey:"lng") != nil && item.value.object(forKey:"lat") != nil) {
+                    marker.position = CLLocationCoordinate2D( latitude: Double(item.value.object(forKey:"lat") as! String)!, longitude: Double(item.value.object(forKey:"lng") as! String)! )
+                    marker.title=(item.value.object(forKey:"name") as! String)
+                    marker.map = mapView
+                    if ((item.value.object(forKey:"name") as! String) == self.namePassed) {
+                        mapView.selectedMarker=marker
+                    }
                 }
             }
-            
             let button = UIButton(frame: CGRect(x: 5, y: self.view.frame.size.height - 55, width: 100, height: 50))
             button.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
             button.setTitle("Check in", for: .normal)
@@ -77,8 +76,10 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
             button2.addTarget(self, action: #selector(MapHomeViewController.goToFriends), for: UIControlEvents.touchUpInside)
             self.view.addSubview(button)
             self.view.addSubview(button2)
-
         })
+
+
+        
       
         /*
         let coordinate₀ = CLLocation(latitude: 5.0, longitude: 5.0)

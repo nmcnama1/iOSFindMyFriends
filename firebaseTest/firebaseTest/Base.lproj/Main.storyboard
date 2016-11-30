@@ -174,7 +174,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="locCell" id="Sby-bP-2z3">
-                                <rect key="frame" x="0.0" y="92" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Sby-bP-2z3" id="QVt-cW-F5b">
                                     <frame key="frameInset" width="375" height="43"/>
@@ -189,6 +189,7 @@
                     </tableView>
                     <connections>
                         <segue destination="2qV-lu-IMC" kind="show" identifier="tableToMapSegue" id="0rZ-dR-6Gt"/>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="returnToHomeSegue" id="YUB-hu-Pl7"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="juU-ID-8ZC" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -244,8 +245,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="M3P-bz-VUL"/>
-        <segue reference="DEI-EP-mW9"/>
-        <segue reference="ZhI-MK-fDG"/>
+        <segue reference="qfI-S7-x9w"/>
+        <segue reference="YUB-hu-Pl7"/>
+        <segue reference="0rZ-dR-6Gt"/>
     </inferredMetricsTieBreakers>
 </document>

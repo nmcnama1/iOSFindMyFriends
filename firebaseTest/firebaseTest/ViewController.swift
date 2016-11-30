@@ -104,11 +104,11 @@ class ViewController: UIViewController {
         self.accountButton.alpha = 1.0    }
     
     //Testing sending info to Firebase
-    @IBAction func sendLocAction(_ sender: AnyObject) {
+   /* @IBAction func sendLocAction(_ sender: AnyObject) {
         let user = FIRAuth.auth()?.currentUser
         self.ref.child("locations").child((user?.uid)!).setValue(["lat": "20.43", "lng":"5.11", "name": "Spike"])
     }
-    
+    */
 
 }
 

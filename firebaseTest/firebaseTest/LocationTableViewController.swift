@@ -24,32 +24,60 @@ class LocationTableViewController: UITableViewController {
     var passLat = 0.00
     var passLong = 0.00
     var passName = "test"
+    var user = FIRAuth.auth()?.currentUser
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(FIRAuth.auth()?.currentUser?.uid as String!)
+        ref.child("friends").child("oYZIvqJbjoZ0BnBEOnTnUL65Ifj2").observe(FIRDataEventType.value, with: { (snapshot) in
+                print(snapshot.value as? [String : AnyObject] ?? [:])
+                print("fffff")
+            })
+        ref.child("friends").observe(FIRDataEventType.value, with: { (snapshot) in
+            let dict = snapshot.value as? [String : AnyObject] ?? [:]
+            for item in dict {
+                print("tf")
+            }
+            print(dict)
+            print("uhh")
+        })
+
         
         newLocs = [info]()
         ref.child("locations").observe(FIRDataEventType.value, with: { (snapshot) in
             let dict = snapshot.value as? [String : AnyObject] ?? [:]
-
+            print("wtf")
             for item in dict {
-                let lat = (item.value.object(forKey:"lat") as! String);
-                let lng = (item.value.object(forKey:"lng") as! String);
-                let name = (item.value.object(forKey:"name") as! String);
+                if ( item.value.object(forKey:"name") != nil  && item.value.object(forKey:"lng") != nil && item.value.object(forKey:"lat") != nil) {
+
+                    //compare if snapshot.key() is in the friend dictionary
+                    let lat = (item.value.object(forKey:"lat") as! String);
+                    let lng = (item.value.object(forKey:"lng") as! String);
+                    let name = (item.value.object(forKey:"name") as! String);
             
-                var inform = info()
-                inform.name = name
-                inform.lat = lat
-                inform.lng = lng
-                self.newLocs.append(inform);
+                    var inform = info()
+                    inform.name = name
+                    inform.lat = lat
+                    inform.lng = lng
+                    self.newLocs.append(inform);
+                }
             }
 
             self.locs = self.newLocs;
             self.tableView.reloadData();
         })
-        
-        
+
+        let button = UIButton(frame: CGRect(x: 5, y: self.view.frame.size.height - 55, width: 100, height: 50))
+        button.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+        button.setTitle("Log out", for: .normal)
+        button.addTarget(self, action: #selector(MapHomeViewController.sendLocAction), for: UIControlEvents.touchUpInside)
+        self.view.addSubview(button)
     }
+    
+//    override func {
+//    
+//    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -90,6 +118,9 @@ class LocationTableViewController: UITableViewController {
         self.performSegue(withIdentifier: "tableToMapSegue", sender: self)
     }
     
+    func goHome() {
+        self.performSegue(withIdentifier: "returnToHomeSegue", sender: self)
+    }
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -132,7 +163,19 @@ class LocationTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        print("HEY")
+      /*  let destinationVC = segue.destination as? ViewController
+
+        try! FIRAuth.auth()?.signOut()
+        
+        destinationVC?.UsernameLabel.text = ""
+        destinationVC?.logoutButton.alpha = 0.0
+        destinationVC?.emailField.text = ""
+        destinationVC?.passwordField.text = ""
+        destinationVC?.emailField.alpha = 1.0
+        destinationVC?.passwordField.alpha = 1.0
+        destinationVC?.loginButton.alpha = 1.0
+        destinationVC?.accountButton.alpha = 1.0*/
+        
         let destinationVC = segue.destination as? MapHomeViewController
         destinationVC?.latPassed=self.passLat
         destinationVC?.lngPassed=self.passLong
