@@ -20,7 +20,6 @@ struct info {
 class LocationTableViewController: UITableViewController {
     var  locs = [info]()
     let ref = FIRDatabase.database().reference(withPath: "data")
-    var newLocs = [info]()
     var passLat = 0.00
     var passLong = 0.00
     var passName = "test"
@@ -31,60 +30,31 @@ class LocationTableViewController: UITableViewController {
         super.viewDidLoad()
         print(FIRAuth.auth()?.currentUser?.uid as String!)
 
+        self.locs = [info]()
         ref.child("friends").child(FIRAuth.auth()?.currentUser?.uid as String!).observe(FIRDataEventType.value, with: { (snapshot) in
             let dict = snapshot.value as? [String : AnyObject] ?? [:]
-            print(dict)
             for item in dict {
 
-                if (item.value as? NSNumber == 1 ) {
+               if (item.value as? NSNumber == 1 ) {
                     self.friendList.append(item.key)
-                }
-            }
-            print(self.friendList)
-        })
-
-        for friend in self.friendList {
-            print(friend)
-            ref.child("locations").child(friend).observe(FIRDataEventType.value, with: { (snapshot) in
-                let dict = snapshot.value as? [String : AnyObject] ?? [:]
-                print(dict)
-                print("asdf")
-//                let lat = (dict.value.object(forKey:"lat") as! String);
-//                let lng = (dict.value.object(forKey:"lng") as! String);
-//                let name = (dict.value.object(forKey:"name") as! String);
-//                
-//                var inform = info()
-//                inform.name = name
-//                inform.lat = lat
-//                inform.lng = lng
-//                self.newLocs.append(inform);
-                
-            })
-        }
-        print(newLocs)
-        newLocs = [info]()
-        ref.child("locations").observe(FIRDataEventType.value, with: { (snapshot) in
-            let dict = snapshot.value as? [String : AnyObject] ?? [:]
-            for item in dict {
-                if ( item.value.object(forKey:"name") != nil  && item.value.object(forKey:"lng") != nil && item.value.object(forKey:"lat") != nil) {
-
-              //      if (item.key in friendList) {
-                        let lat = (item.value.object(forKey:"lat") as! String);
-                        let lng = (item.value.object(forKey:"lng") as! String);
-                        let name = (item.value.object(forKey:"name") as! String);
-            
+                    self.ref.child("locations").child(item.key).observe(FIRDataEventType.value, with: { (snapshot) in
+                        let locDict = snapshot.value as? [String : AnyObject] ?? [:]
+                    
+                        let lat = (locDict["lat"] as! String);
+                        let lng = (locDict["lng"] as! String);
+                        let name = (locDict["name"] as! String);
+                        
                         var inform = info()
                         inform.name = name
                         inform.lat = lat
                         inform.lng = lng
-                        self.newLocs.append(inform);
-         //           }
+                        self.locs.append(inform);
+                        self.tableView.reloadData();
+                    })
                 }
             }
-
-            self.locs = self.newLocs;
-            self.tableView.reloadData();
         })
+
 
         let button = UIButton(frame: CGRect(x: 5, y: self.view.frame.size.height - 55, width: 100, height: 50))
         button.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
