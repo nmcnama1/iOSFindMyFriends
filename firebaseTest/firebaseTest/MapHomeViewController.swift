@@ -43,32 +43,36 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
 
         //marker2.snippet = "House"
 
-        if let mylocation = mapView.myLocation {
-            print("User's location: \(mylocation)")
-        } /*else {
-            let alertController = UIAlertController(title: "Error", message: "Location is null", preferredStyle: UIAlertControllerStyle.alert)
-            alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-            self.present(alertController, animated: true, completion: nil)
-        }*/
-        
-        ref.child("locations").observe(FIRDataEventType.value, with: { (snapshot) in
-            let dict = snapshot.value as? [String : AnyObject] ?? [:]
+
+        self.ref.child("locations").child((FIRAuth.auth()?.currentUser?.uid)!).observe(FIRDataEventType.value, with: { (snapshot) in
+            let locDict = snapshot.value as? [String : AnyObject] ?? [:]
             
+            let selfMarker = GMSMarker()
+
+            selfMarker.position = CLLocationCoordinate2D( latitude: Double(locDict["lat"] as! String)!, longitude: Double(locDict["lng"] as! String)! )
+            selfMarker.icon = GMSMarker.markerImage(with: .black)
+            selfMarker.title="You"
+            selfMarker.map = mapView
+        })
+        
+        ref.child("friends").child(FIRAuth.auth()?.currentUser?.uid as String!).observe(FIRDataEventType.value, with: { (snapshot) in
+            let dict = snapshot.value as? [String : AnyObject] ?? [:]
             for item in dict {
-                let marker = GMSMarker()
-                if ( item.value.object(forKey:"name") != nil  && item.value.object(forKey:"lng") != nil && item.value.object(forKey:"lat") != nil) {
-                    marker.position = CLLocationCoordinate2D( latitude: Double(item.value.object(forKey:"lat") as! String)!, longitude: Double(item.value.object(forKey:"lng") as! String)! )
-                    if (item.key==FIRAuth.auth()?.currentUser?.uid) {
-                        marker.icon = GMSMarker.markerImage(with: .black)
-                        marker.title="You"
-                    } else {
-                        marker.icon = GMSMarker.markerImage(with: .green)
-                        marker.title=(item.value.object(forKey:"name") as! String)
-                    }
-                    marker.map = mapView
-                    if ((item.value.object(forKey:"name") as! String) == self.namePassed) {
-                        mapView.selectedMarker=marker
-                    }
+                if (item.value as? NSNumber == 1 && item.key != FIRAuth.auth()?.currentUser?.uid) {
+                    self.ref.child("locations").child(item.key).observe(FIRDataEventType.value, with: { (snapshot) in
+                        let locDict = snapshot.value as? [String : AnyObject] ?? [:]
+                        if ( locDict["name"] != nil  && locDict["lat"] != nil && locDict["lng"] != nil) {
+                            let friendMarker = GMSMarker()
+                            friendMarker.icon = GMSMarker.markerImage(with: .green)
+                            friendMarker.position = CLLocationCoordinate2D( latitude: Double(locDict["lat"] as! String)!, longitude: Double(locDict["lng"] as! String)! )
+                            friendMarker.title=(locDict["name"] as! String)
+                            friendMarker.map = mapView
+                            if ((locDict["name"] as! String) == self.namePassed) {
+                                friendMarker.zIndex=10
+                                mapView.selectedMarker=friendMarker
+                            }
+                        }
+                    })
                 }
             }
             let button = UIButton(frame: CGRect(x: 5, y: self.view.frame.size.height - 55, width: 100, height: 50))
@@ -83,7 +87,30 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
             self.view.addSubview(button)
             self.view.addSubview(button2)
         })
-
+        
+        
+//        ref.child("locations").observe(FIRDataEventType.value, with: { (snapshot) in
+//            let dict = snapshot.value as? [String : AnyObject] ?? [:]
+//            
+//            for item in dict {
+//                let marker = GMSMarker()
+//                if ( item.value.object(forKey:"name") != nil  && item.value.object(forKey:"lng") != nil && item.value.object(forKey:"lat") != nil) {
+//                    marker.position = CLLocationCoordinate2D( latitude: Double(item.value.object(forKey:"lat") as! String)!, longitude: Double(item.value.object(forKey:"lng") as! String)! )
+//                    if (item.key==FIRAuth.auth()?.currentUser?.uid) {
+//                        marker.icon = GMSMarker.markerImage(with: .black)
+//                        marker.title="You"
+//                    } else {
+//                        marker.icon = GMSMarker.markerImage(with: .green)
+//                        marker.title=(item.value.object(forKey:"name") as! String)
+//                    }
+//                    marker.map = mapView
+//                    if ((item.value.object(forKey:"name") as! String) == self.namePassed) {
+//                        mapView.selectedMarker=marker
+//                    }
+//                }
+//            }
+//        })
+//
 
         
       
