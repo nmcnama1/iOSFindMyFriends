@@ -39,7 +39,7 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
         let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         view = mapView
         mapView.isMyLocationEnabled = true
-//        mapView.settings.myLocationButton = true
+        mapView.settings.myLocationButton = true
 
         //marker2.snippet = "House"
 
@@ -58,7 +58,13 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
                 let marker = GMSMarker()
                 if ( item.value.object(forKey:"name") != nil  && item.value.object(forKey:"lng") != nil && item.value.object(forKey:"lat") != nil) {
                     marker.position = CLLocationCoordinate2D( latitude: Double(item.value.object(forKey:"lat") as! String)!, longitude: Double(item.value.object(forKey:"lng") as! String)! )
-                    marker.title=(item.value.object(forKey:"name") as! String)
+                    if (item.key==FIRAuth.auth()?.currentUser?.uid) {
+                        marker.icon = GMSMarker.markerImage(with: .black)
+                        marker.title="You"
+                    } else {
+                        marker.icon = GMSMarker.markerImage(with: .green)
+                        marker.title=(item.value.object(forKey:"name") as! String)
+                    }
                     marker.map = mapView
                     if ((item.value.object(forKey:"name") as! String) == self.namePassed) {
                         mapView.selectedMarker=marker
