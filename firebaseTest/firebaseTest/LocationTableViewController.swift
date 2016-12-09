@@ -18,7 +18,8 @@ struct info {
 }
 
 class LocationTableViewController: UITableViewController {
-    var  locs = [info]()
+    var locs = [info]()
+    var requests = [info]()
     let ref = FIRDatabase.database().reference(withPath: "data")
     var passLat = 0.00
     var passLong = 0.00
@@ -31,8 +32,10 @@ class LocationTableViewController: UITableViewController {
         print(FIRAuth.auth()?.currentUser?.uid as String!)
 
         self.locs = [info]()
+        self.requests = [info]()
         ref.child("friends").child(FIRAuth.auth()?.currentUser?.uid as String!).observe(FIRDataEventType.value, with: { (snapshot) in
             let dict = snapshot.value as? [String : AnyObject] ?? [:]
+            self.locs = [info]()
             for item in dict {
                if (item.value as? NSNumber == 1 && item.key != FIRAuth.auth()?.currentUser?.uid) {
                     self.friendList.append(item.key)
@@ -42,14 +45,34 @@ class LocationTableViewController: UITableViewController {
                         let lat = (locDict["lat"] as! String);
                         let lng = (locDict["lng"] as! String);
                         let name = (locDict["name"] as! String);
+                        let id = item.key;
                         
                         var inform = info()
                         inform.name = name
                         inform.lat = lat
                         inform.lng = lng
+                        inform.id = id;
                         self.locs.append(inform);
                         self.tableView.reloadData();
                     })
+                }
+               else if(item.value as? NSNumber == 2 && item.key != FIRAuth.auth()?.currentUser?.uid){
+                    self.ref.child("locations").child(item.key).observe(FIRDataEventType.value, with: { (snapshot) in
+                        let locDict = snapshot.value as? [String : AnyObject] ?? [:]
+                    
+                        let lat = "Unknown";
+                        let lng = "Unknown";
+                        let name = (locDict["name"] as! String);
+                        let id = item.key;
+                        
+                        var inform = info()
+                        inform.name = name
+                        inform.lat = lat
+                        inform.lng = lng
+                        inform.id = id;
+                        self.requests.append(inform);
+                        self.tableView.reloadData();
+                })
                 }
             }
         })
@@ -62,9 +85,20 @@ class LocationTableViewController: UITableViewController {
         self.view.addSubview(button)
     }
     
-//    override func {
-//    
-//    }
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        if(section == 0){
+            return "Friend Requests";
+        }
+        else if(section == 1){
+            return "Friends";
+        }
+        else{
+            return "SECTION"
+        }
+    }
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -75,12 +109,20 @@ class LocationTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return 2;
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return locs.count
+        if(section == 0){
+            return requests.count;
+        }
+        else if (section == 1){
+            return locs.count;
+        }
+        else{
+            return 0;
+        }
     }
 
     
@@ -88,7 +130,12 @@ class LocationTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "locCell", for: indexPath)
 
         // Configure the cell...
-        cell.textLabel!.text = self.locs[indexPath.row].name + ": (" + self.locs[indexPath.row].lat + ", " + self.locs[indexPath.row].lng + ")"
+        if(indexPath.section == 0){
+            cell.textLabel!.text = self.requests[indexPath.row].name;
+        }
+        else if(indexPath.section == 1){
+            cell.textLabel!.text = self.locs[indexPath.row].name + ": (" + self.locs[indexPath.row].lat + ", " + self.locs[indexPath.row].lng + ")"
+        }
         return cell
     }
     
@@ -96,13 +143,22 @@ class LocationTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
    //     var myVC = storyboard?.instantiateViewController(withIdentifier: "MapHomeViewController") as! MapHomeViewController
-        self.passLat = Double(self.locs[indexPath.row].lat)!
-        self.passLong = Double(self.locs[indexPath.row].lng)!
-        self.passName = self.locs[indexPath.row].name
         
-       // navigationController?.pushViewController(myVC, animated: true)
         
-        self.performSegue(withIdentifier: "tableToMapSegue", sender: self)
+        if(indexPath.section == 0){
+            ref.child("friends").child(FIRAuth.auth()?.currentUser?.uid as String!).child(requests[indexPath.row].id).setValue(1);
+            ref.child("friends").child(requests[indexPath.row].id).child(FIRAuth.auth()?.currentUser?.uid as String!).setValue(1);
+            requests.remove(at: indexPath.row);
+        }
+        //Friend is clicked
+        if(indexPath.section == 1){
+            self.passLat = Double(self.locs[indexPath.row].lat)!
+            self.passLong = Double(self.locs[indexPath.row].lng)!
+            self.passName = self.locs[indexPath.row].name
+            
+            self.performSegue(withIdentifier: "tableToMapSegue", sender: self)
+        }
+        
     }
     
     func goHome() {
