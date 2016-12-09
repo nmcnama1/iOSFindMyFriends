@@ -10,6 +10,7 @@
 		6B9FE236D9C40A7D74DA9CB1 /* Pods_firebaseTestTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D90B4BD00555E7938A7879B /* Pods_firebaseTestTests.framework */; };
 		A55DEFBC342D980CCE079309 /* Pods_firebaseTestUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDB49A78EF85FF52AA2D7F07 /* Pods_firebaseTestUITests.framework */; };
 		AEC5C80B1DD378DE001D16D1 /* MapHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEC5C80A1DD378DD001D16D1 /* MapHomeViewController.swift */; };
+		AED9C3BE1DFB374B00559692 /* NavBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED9C3BD1DFB374B00559692 /* NavBarViewController.swift */; };
 		D142424C1DCA33BD00ACFA3B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D142424B1DCA33BD00ACFA3B /* AppDelegate.swift */; };
 		D142424E1DCA33BD00ACFA3B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D142424D1DCA33BD00ACFA3B /* ViewController.swift */; };
 		D14242511DCA33BD00ACFA3B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D142424F1DCA33BD00ACFA3B /* Main.storyboard */; };
@@ -48,6 +49,7 @@
 		9CC056510802670F5C0281F3 /* Pods-firebaseTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-firebaseTest.release.xcconfig"; path = "Pods/Target Support Files/Pods-firebaseTest/Pods-firebaseTest.release.xcconfig"; sourceTree = "<group>"; };
 		9D90B4BD00555E7938A7879B /* Pods_firebaseTestTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_firebaseTestTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEC5C80A1DD378DD001D16D1 /* MapHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapHomeViewController.swift; sourceTree = "<group>"; };
+		AED9C3BD1DFB374B00559692 /* NavBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavBarViewController.swift; sourceTree = "<group>"; };
 		C1E3474CD84A50068A175460 /* Pods-firebaseTestTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-firebaseTestTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-firebaseTestTests/Pods-firebaseTestTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C3B33EBCE321570FAC2F3DC4 /* Pods-firebaseTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-firebaseTest.debug.xcconfig"; path = "Pods/Target Support Files/Pods-firebaseTest/Pods-firebaseTest.debug.xcconfig"; sourceTree = "<group>"; };
 		D14242481DCA33BD00ACFA3B /* firebaseTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = firebaseTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -140,6 +142,7 @@
 				D142424F1DCA33BD00ACFA3B /* Main.storyboard */,
 				D15D11EF1DD2562000D9363A /* AccountCreationViewController.swift */,
 				AEC5C80A1DD378DD001D16D1 /* MapHomeViewController.swift */,
+				AED9C3BD1DFB374B00559692 /* NavBarViewController.swift */,
 				D14242521DCA33BD00ACFA3B /* Assets.xcassets */,
 				D14242541DCA33BD00ACFA3B /* LaunchScreen.storyboard */,
 				D14242571DCA33BD00ACFA3B /* Info.plist */,
@@ -462,6 +465,7 @@
 			files = (
 				AEC5C80B1DD378DE001D16D1 /* MapHomeViewController.swift in Sources */,
 				D142424E1DCA33BD00ACFA3B /* ViewController.swift in Sources */,
+				AED9C3BE1DFB374B00559692 /* NavBarViewController.swift in Sources */,
 				D15D11F01DD2562000D9363A /* AccountCreationViewController.swift in Sources */,
 				D18849C61DDB965200FB0698 /* LocationTableViewController.swift in Sources */,
 				D142424C1DCA33BD00ACFA3B /* AppDelegate.swift in Sources */,

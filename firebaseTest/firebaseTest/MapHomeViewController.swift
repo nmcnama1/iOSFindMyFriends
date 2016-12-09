@@ -53,6 +53,7 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
             selfMarker.icon = GMSMarker.markerImage(with: .black)
             selfMarker.title="You"
             selfMarker.map = mapView
+            selfMarker.zIndex=10
         })
         
         ref.child("friends").child(FIRAuth.auth()?.currentUser?.uid as String!).observe(FIRDataEventType.value, with: { (snapshot) in
@@ -86,6 +87,8 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
             button2.addTarget(self, action: #selector(MapHomeViewController.goToFriends), for: UIControlEvents.touchUpInside)
             self.view.addSubview(button)
             self.view.addSubview(button2)
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(MapHomeViewController.testing))
+
         })
         
         
@@ -123,6 +126,10 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
         print("asdfasdf")
         */
         
+    }
+    func testing() {
+        print("SUIDHLFJKN")
+        print("FUCK YEAH")
     }
 
     override func didReceiveMemoryWarning() {

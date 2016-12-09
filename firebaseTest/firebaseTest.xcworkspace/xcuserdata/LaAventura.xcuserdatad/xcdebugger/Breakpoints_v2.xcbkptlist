@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "firebaseTest/MapHomeViewController.swift"
-            timestampString = "502700379.793596"
+            timestampString = "503007457.286351"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "136"
-            endingLineNumber = "136"
+            startingLineNumber = "143"
+            endingLineNumber = "143"
             landmarkName = "locationManager(_:didUpdateLocations:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -35,93 +35,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "firebaseTest/LocationTableViewController.swift"
-            timestampString = "502690044.206578"
+            filePath = "firebaseTest/MapHomeViewController.swift"
+            timestampString = "503007130.546294"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
-            landmarkName = "LocationTableViewController"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "firebaseTest/LocationTableViewController.swift"
-            timestampString = "502690044.206578"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "firebaseTest/LocationTableViewController.swift"
-            timestampString = "502690044.206578"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "firebaseTest.LocationTableViewController.(viewDidLoad () -&gt; ()).(closure #1)"
-                  moduleName = "firebaseTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/LaAventura/Desktop/firebaseTest/firebaseTest/firebaseTest/LocationTableViewController.swift"
-                  timestampString = "502677673.077384"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "53"
-                  endingLineNumber = "53"
-                  offsetFromSymbolStart = "2318">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "firebaseTest.LocationTableViewController.(viewDidLoad () -&gt; ()).(closure #1).(closure #1)"
-                  moduleName = "firebaseTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/LaAventura/Desktop/firebaseTest/firebaseTest/firebaseTest/LocationTableViewController.swift"
-                  timestampString = "502677673.079513"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "53"
-                  endingLineNumber = "53"
-                  offsetFromSymbolStart = "3096">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "firebaseTest/LocationTableViewController.swift"
-            timestampString = "502690044.206578"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "49"
-            endingLineNumber = "49"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "132"
+            endingLineNumber = "132"
+            landmarkName = "testing()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
