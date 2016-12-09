@@ -43,11 +43,11 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
 
         //marker2.snippet = "House"
 
+        let selfMarker = GMSMarker()
 
         self.ref.child("locations").child((FIRAuth.auth()?.currentUser?.uid)!).observe(FIRDataEventType.value, with: { (snapshot) in
             let locDict = snapshot.value as? [String : AnyObject] ?? [:]
             
-            let selfMarker = GMSMarker()
 
             selfMarker.position = CLLocationCoordinate2D( latitude: Double(locDict["lat"] as! String)!, longitude: Double(locDict["lng"] as! String)! )
             selfMarker.icon = GMSMarker.markerImage(with: .black)
@@ -87,10 +87,9 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
             button2.addTarget(self, action: #selector(MapHomeViewController.goToFriends), for: UIControlEvents.touchUpInside)
             self.view.addSubview(button)
             self.view.addSubview(button2)
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(MapHomeViewController.testing))
 
         })
-        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(MapHomeViewController.goToSettings))
         
 //        ref.child("locations").observe(FIRDataEventType.value, with: { (snapshot) in
 //            let dict = snapshot.value as? [String : AnyObject] ?? [:]
@@ -129,7 +128,6 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
     }
     func testing() {
         print("SUIDHLFJKN")
-        print("FUCK YEAH")
     }
 
     override func didReceiveMemoryWarning() {
@@ -161,6 +159,10 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
     
     func goToFriends(){
         self.performSegue(withIdentifier: "MaptoTableSegue", sender: self)
+    }
+    
+    func goToSettings(){
+        self.performSegue(withIdentifier: "MaptoSettingsSegue", sender: self)
     }
     
     @IBAction func sendLocAction(_ sender: AnyObject) {

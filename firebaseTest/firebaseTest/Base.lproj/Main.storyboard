@@ -165,6 +165,31 @@
             </objects>
             <point key="canvasLocation" x="1724" y="123.68815592203899"/>
         </scene>
+        <!--Settings-->
+        <scene sceneID="j7O-Yo-DSv">
+            <objects>
+                <viewController id="byW-ZA-hke" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="AVJ-zE-3kG"/>
+                        <viewControllerLayoutGuide type="bottom" id="OBt-uH-u1q"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Sss-ce-B8n">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qpj-kM-jN3">
+                                <frame key="frameInset" minX="111" minY="196" width="51" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </switch>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Settings" id="pro-oQ-rGK"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Xwg-Gj-EiA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2490" y="121"/>
+        </scene>
         <!--Friends-->
         <scene sceneID="zPf-5N-vGh">
             <objects>
@@ -192,13 +217,14 @@
                     <connections>
                         <segue destination="2qV-lu-IMC" kind="show" identifier="tableToMapSegue" id="0rZ-dR-6Gt"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="returnToHomeSegue" id="YUB-hu-Pl7"/>
+                        <segue destination="byW-ZA-hke" kind="show" identifier="FriendstoSettingsSegue" id="Gjv-rm-80k"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="juU-ID-8ZC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1052" y="922"/>
         </scene>
-        <!--FIND MY HOMIES-->
+        <!--Social Location-->
         <scene sceneID="qfo-pz-h2a">
             <objects>
                 <viewController id="2qV-lu-IMC" customClass="MapHomeViewController" customModule="firebaseTest" customModuleProvider="target" sceneMemberID="viewController">
@@ -220,10 +246,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="FIND MY HOMIES" id="5gL-pr-170"/>
+                    <navigationItem key="navigationItem" title="Social Location" id="5gL-pr-170"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <segue destination="sCG-gz-wcb" kind="show" identifier="MaptoTableSegue" id="M3P-bz-VUL"/>
+                        <segue destination="byW-ZA-hke" kind="show" identifier="MaptoSettingsSegue" id="STM-TN-QTO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1NW-yq-F8e" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -250,8 +277,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="qfI-S7-x9w"/>
-        <segue reference="ZhI-MK-fDG"/>
         <segue reference="0rZ-dR-6Gt"/>
+        <segue reference="M3P-bz-VUL"/>
+        <segue reference="YUB-hu-Pl7"/>
+        <segue reference="STM-TN-QTO"/>
     </inferredMetricsTieBreakers>
 </document>

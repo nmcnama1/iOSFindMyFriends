@@ -76,6 +76,7 @@ class LocationTableViewController: UITableViewController {
                 }
             }
         })
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(LocationTableViewController.goToSettings))
 
 
         let button = UIButton(frame: CGRect(x: 5, y: self.view.frame.size.height - 55, width: 100, height: 50))
@@ -225,5 +226,8 @@ class LocationTableViewController: UITableViewController {
         destinationVC?.namePassed=self.passName
     }
     
+    func goToSettings(){
+        self.performSegue(withIdentifier: "FriendstoSettingsSegue", sender: self)
+    }
 
 }
