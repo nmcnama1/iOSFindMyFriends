@@ -53,7 +53,7 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
             selfMarker.icon = GMSMarker.markerImage(with: .black)
             selfMarker.title="You"
             selfMarker.map = mapView
-            selfMarker.zIndex=10
+            selfMarker.zIndex=9
         })
         
         ref.child("friends").child(FIRAuth.auth()?.currentUser?.uid as String!).observe(FIRDataEventType.value, with: { (snapshot) in
@@ -162,7 +162,7 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func goToSettings(){
-        self.performSegue(withIdentifier: "MaptoSettingsSegue", sender: self)
+        self.performSegue(withIdentifier: "MaptoSettings_Segue", sender: self)
     }
     
     @IBAction func sendLocAction(_ sender: AnyObject) {

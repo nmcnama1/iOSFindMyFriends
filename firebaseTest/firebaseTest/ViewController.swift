@@ -24,7 +24,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        navigationController?.setNavigationBarHidden(false, animated: true)
         if let user = FIRAuth.auth()?.currentUser
         {
             self.logoutButton.alpha = 1.0
@@ -101,7 +101,8 @@ class ViewController: UIViewController {
         self.emailField.alpha = 1.0
         self.passwordField.alpha = 1.0
         self.loginButton.alpha = 1.0
-        self.accountButton.alpha = 1.0    }
+        self.accountButton.alpha = 1.0
+    }
     
     //Testing sending info to Firebase
    /* @IBAction func sendLocAction(_ sender: AnyObject) {
