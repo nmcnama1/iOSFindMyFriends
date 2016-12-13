@@ -45,9 +45,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     // Location Manager Delegate stuff
     
-    func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         locationManager.stopUpdatingLocation()
-        if ((error) != nil) {
+        if ((Error).self != nil) {
             if (seenError == false) {
                 seenError = true
                 print(error)
@@ -55,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+    private func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         if (locationFixAchieved == false) {
             locationFixAchieved = true
             var locationArray = locations as NSArray
@@ -67,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
-    func locationManager(manager: CLLocationManager!,
+    private func locationManager(manager: CLLocationManager!,
                          didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         var shouldIAllow = false
         

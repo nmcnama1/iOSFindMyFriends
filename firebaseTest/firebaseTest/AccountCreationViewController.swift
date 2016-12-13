@@ -15,7 +15,7 @@ class AccountCreationViewController: UIViewController {
     @IBOutlet weak var confirmEmailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var confirmPasswordField: UITextField!
-    
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,6 +79,7 @@ class AccountCreationViewController: UIViewController {
                     self.passwordField.text = ""
                     self.confirmPasswordField.text = ""
                     self.confirmEmailField.text = ""
+                    self.setSharing()
                     let alertController = UIAlertController(title: "Success", message: "Account Created", preferredStyle: .alert)
                     
                     let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
@@ -106,7 +107,11 @@ class AccountCreationViewController: UIViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-   */ 
+   */
+    
+    func setSharing() {
+        appDelegate.sharing = true
+    }
     
 
 }

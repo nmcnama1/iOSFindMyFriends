@@ -24,16 +24,16 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.setNavigationBarHidden(false, animated: true)
+  //      navigationController?.setNavigationBarHidden(false, animated: true)
         if let user = FIRAuth.auth()?.currentUser
         {
+            self.getSharing()
             self.logoutButton.alpha = 1.0
             self.UsernameLabel.text = user.email
             self.emailField.alpha = 0.0
             self.passwordField.alpha = 0.0
             self.loginButton.alpha = 0.0
             self.accountButton.alpha = 0.0
-            self.getSharing()
             self.performSegue(withIdentifier: "SuccessfulLoginSegue", sender: self)
         }
         else
@@ -66,6 +66,8 @@ class ViewController: UIViewController {
             FIRAuth.auth()?.signIn(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: { (user, error) in
                 if error == nil
                 {
+                    self.getSharing()
+                    
                     self.logoutButton.alpha = 1.0
                     self.UsernameLabel.text = user!.email
                     self.emailField.text = ""
@@ -125,7 +127,6 @@ class ViewController: UIViewController {
             } else {
                 self.appDelegate.sharing=true
             }
-
         })
     }
 }
