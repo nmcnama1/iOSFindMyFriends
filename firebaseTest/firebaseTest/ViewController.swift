@@ -73,8 +73,7 @@ class ViewController: UIViewController {
                     self.passwordField.alpha = 0.0
                     self.loginButton.alpha = 0.0
                     self.accountButton.alpha = 0.0
-                    
-                    self.performSegue(withIdentifier: "SuccessfulLoginSegue", sender: self)                    
+                    self.performSegue(withIdentifier: "SuccessfulLoginSegue", sender: self)
                 }
                 else
                 {

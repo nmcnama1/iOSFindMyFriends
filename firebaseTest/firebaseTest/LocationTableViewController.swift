@@ -24,7 +24,6 @@ class LocationTableViewController: UITableViewController {
     var passLat = 0.00
     var passLong = 0.00
     var passName = "test"
-   // var user = FIRAuth.auth()?.currentUser
     var friendList = [String]()
     
     override func viewDidLoad() {
@@ -41,19 +40,20 @@ class LocationTableViewController: UITableViewController {
                     self.friendList.append(item.key)
                     self.ref.child("locations").child(item.key).observe(FIRDataEventType.value, with: { (snapshot) in
                         let locDict = snapshot.value as? [String : AnyObject] ?? [:]
-                    
-                        let lat = (locDict["lat"] as! String);
-                        let lng = (locDict["lng"] as! String);
-                        let name = (locDict["name"] as! String);
-                        let id = item.key;
+                        if (locDict.count>0) {
+                            let lat = (locDict["lat"] as! String);
+                            let lng = (locDict["lng"] as! String);
+                            let name = (locDict["name"] as! String);
+                            let id = item.key
                         
-                        var inform = info()
-                        inform.name = name
-                        inform.lat = lat
-                        inform.lng = lng
-                        inform.id = id;
-                        self.locs.append(inform);
-                        self.tableView.reloadData();
+                            var inform = info()
+                            inform.name = name
+                            inform.lat = lat
+                            inform.lng = lng
+                            inform.id = id;
+                            self.locs.append(inform);
+                            self.tableView.reloadData();
+                        }
                     })
                 }
                else if(item.value as? NSNumber == 2 && item.key != FIRAuth.auth()?.currentUser?.uid){

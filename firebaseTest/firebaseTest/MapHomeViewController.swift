@@ -47,13 +47,14 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
 
         self.ref.child("locations").child((FIRAuth.auth()?.currentUser?.uid)!).observe(FIRDataEventType.value, with: { (snapshot) in
             let locDict = snapshot.value as? [String : AnyObject] ?? [:]
-            
-
-            selfMarker.position = CLLocationCoordinate2D( latitude: Double(locDict["lat"] as! String)!, longitude: Double(locDict["lng"] as! String)! )
-            selfMarker.icon = GMSMarker.markerImage(with: .black)
-            selfMarker.title="You"
-            selfMarker.map = mapView
-            selfMarker.zIndex=9
+            print(locDict)
+            if (locDict.count != 0 ) {
+                selfMarker.position = CLLocationCoordinate2D( latitude: Double(locDict["lat"] as! String)!, longitude: Double(locDict["lng"] as! String)! )
+                selfMarker.icon = GMSMarker.markerImage(with: .black)
+                selfMarker.title="You"
+                selfMarker.map = mapView
+                selfMarker.zIndex=9
+            }
         })
         
         ref.child("friends").child(FIRAuth.auth()?.currentUser?.uid as String!).observe(FIRDataEventType.value, with: { (snapshot) in
@@ -91,30 +92,6 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
         })
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(MapHomeViewController.goToSettings))
         
-//        ref.child("locations").observe(FIRDataEventType.value, with: { (snapshot) in
-//            let dict = snapshot.value as? [String : AnyObject] ?? [:]
-//            
-//            for item in dict {
-//                let marker = GMSMarker()
-//                if ( item.value.object(forKey:"name") != nil  && item.value.object(forKey:"lng") != nil && item.value.object(forKey:"lat") != nil) {
-//                    marker.position = CLLocationCoordinate2D( latitude: Double(item.value.object(forKey:"lat") as! String)!, longitude: Double(item.value.object(forKey:"lng") as! String)! )
-//                    if (item.key==FIRAuth.auth()?.currentUser?.uid) {
-//                        marker.icon = GMSMarker.markerImage(with: .black)
-//                        marker.title="You"
-//                    } else {
-//                        marker.icon = GMSMarker.markerImage(with: .green)
-//                        marker.title=(item.value.object(forKey:"name") as! String)
-//                    }
-//                    marker.map = mapView
-//                    if ((item.value.object(forKey:"name") as! String) == self.namePassed) {
-//                        mapView.selectedMarker=marker
-//                    }
-//                }
-//            }
-//        })
-//
-
-        
       
         /*
         let coordinate₀ = CLLocation(latitude: 5.0, longitude: 5.0)
@@ -125,9 +102,6 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
         print("asdfasdf")
         */
         
-    }
-    func testing() {
-        print("SUIDHLFJKN")
     }
 
     override func didReceiveMemoryWarning() {
@@ -167,7 +141,13 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
     
     @IBAction func sendLocAction(_ sender: AnyObject) {
         let user = FIRAuth.auth()?.currentUser
-        self.ref.child("locations").child((user?.uid)!).setValue(["lat": String(self.currentLat), "lng":String(currentLng), "name": "Spike"])
+        var name=""
+        ref.child("users").child((user?.uid)!).observe(FIRDataEventType.value, with: { (snapshot) in
+            let dict = snapshot.value as? [String : AnyObject] ?? [:]
+            name=dict["name"] as! String
+            self.ref.child("locations").child((user?.uid)!).setValue(["lat": String(self.currentLat), "lng":String(self.currentLng), "name": name])
+        })
+        
     }
 
 }

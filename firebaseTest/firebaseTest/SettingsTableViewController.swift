@@ -11,16 +11,28 @@ import Firebase
 import FirebaseDatabase
 
 
-class SettingsTableViewController: UITableViewController {
-
+class SettingsTableViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+    @IBOutlet weak var Killswitch: UISwitch!
+    @IBOutlet weak var pickerView: UIPickerView!
+    @IBOutlet weak var IntervalText: UILabel!
+    @IBOutlet weak var AutoUpdateSwitch: UISwitch!
+    
+    let ref = FIRDatabase.database().reference(withPath: "data")
+    
+    var pickerDataSource = ["1 minute", "5 minutes", "10 minutes"];
+    var pickerVisible = false;
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.pickerView.dataSource = self;
+        self.pickerView.delegate = self;
         // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
+        //self.clearsSelectionOnViewWillAppear = false
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        Killswitch.isOn =  UserDefaults.standard.bool(forKey: "switchState")
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -37,16 +49,43 @@ class SettingsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 2
+        if (section==0) {
+            return 4
+        } else {
+            return 2
+        }
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        if (indexPath==[1,0]) {             //logout
+        if (indexPath==[0,0]) {                     //enable location sharing
+            Killswitch.setOn(!Killswitch.isOn, animated: true)
+            self.killswitchFlip(Killswitch)
+        } else if (indexPath==[0,1]) {              //enable auto update
+            AutoUpdateSwitch.setOn(!AutoUpdateSwitch.isOn, animated: true)
+            self.AutoUpdateChange(AutoUpdateSwitch)
+        } else if (indexPath==[1,0]) {             //account details
+            self.performSegue(withIdentifier: "SettingsToAccountSegue", sender: self)
+        } else if (indexPath==[1,1]) {              //logout
             self.confirmLogout()
-        } else if (indexPath==[1,1]) {      //delete account
-            self.confirmDelete()
         }
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if (indexPath==[0,2]) {
+            if (pickerVisible) {
+                return 0.0
+            } else {
+                return 44.0
+            }
+        } else if (indexPath==[0,3]) {
+            if (pickerVisible) {
+                return 0.0
+            } else {
+                return 165.0
+            }
+        }
+        return 44.0
     }
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -102,6 +141,45 @@ class SettingsTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    @IBAction func AutoUpdateChange(_ sender: AnyObject) {
+        pickerVisible = !pickerVisible
+        tableView.reloadData()
+    }
+    
+    ////////////////////// Methods to make SettingsTableViewController the UIPicker Delegate
+    //number of columns in picker
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    //number of possible items in picker
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return pickerDataSource.count;
+    }
+    
+    //handles selection
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if (row==0) {
+            print("1 minute")
+        } else if (row==1) {
+            print("5 minutes")
+        } else if (row==2) {
+            print("10 minutes")
+        }
+        IntervalText.text = pickerDataSource[row]
+        return pickerDataSource[row]
+    }
+    ///////////////////////
+    
+    @IBAction func killswitchFlip(_ sender: AnyObject) {
+        UserDefaults.standard.set(Killswitch.isOn, forKey: "switchState")
+        if(!Killswitch.isOn) {
+            //Kill my location
+            self.ref.child("locations").child(FIRAuth.auth()?.currentUser?.uid as String!).removeValue()
+        } else {//return my location
+            print("We need to re-get the user's location, and I think the location manager needs to not just be defined in the maphomeviewcontroller!")
+        }
+    }
     @IBAction func confirmLogout() {
         
         // create the alert
@@ -133,5 +211,6 @@ class SettingsTableViewController: UITableViewController {
         try! FIRAuth.auth()?.signOut()
         self.performSegue(withIdentifier: "LogoutSegue", sender: self)
     }
+
 
 }
