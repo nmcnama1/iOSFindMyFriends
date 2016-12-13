@@ -22,6 +22,7 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
     var newLocs = [String]()
     var currentLat = 0.00
     var currentLng = 0.00
+    var backEnabled = true
 
     
     var didFindMyLocation = false
@@ -92,7 +93,9 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
         })
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(MapHomeViewController.goToSettings))
         
-      
+        if (!self.backEnabled) {
+            self.navigationItem.setHidesBackButton(true, animated: false)
+        }
         /*
         let coordinate₀ = CLLocation(latitude: 5.0, longitude: 5.0)
         let coordinate₁ = CLLocation(latitude: 5.0, longitude: 3.0)
@@ -133,10 +136,12 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
     
     func goToFriends(){
         self.performSegue(withIdentifier: "MaptoTableSegue", sender: self)
+        self.backEnabled=true
     }
     
     func goToSettings(){
         self.performSegue(withIdentifier: "MaptoSettings_Segue", sender: self)
+        self.backEnabled=true
     }
     
     @IBAction func sendLocAction(_ sender: AnyObject) {

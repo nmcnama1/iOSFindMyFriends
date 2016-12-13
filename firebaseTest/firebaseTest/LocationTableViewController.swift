@@ -201,19 +201,7 @@ class LocationTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-      /*  let destinationVC = segue.destination as? ViewController
-
-        try! FIRAuth.auth()?.signOut()
-        
-        destinationVC?.UsernameLabel.text = ""
-        destinationVC?.logoutButton.alpha = 0.0
-        destinationVC?.emailField.text = ""
-        destinationVC?.passwordField.text = ""
-        destinationVC?.emailField.alpha = 1.0
-        destinationVC?.passwordField.alpha = 1.0
-        destinationVC?.loginButton.alpha = 1.0
-        destinationVC?.accountButton.alpha = 1.0*/
-        
+        print(sender)
         let destinationVC = segue.destination as? MapHomeViewController
         destinationVC?.latPassed=self.passLat
         destinationVC?.lngPassed=self.passLong

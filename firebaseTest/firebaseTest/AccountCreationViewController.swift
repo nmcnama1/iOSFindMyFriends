@@ -102,6 +102,14 @@ class AccountCreationViewController: UIViewController {
         
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        print(sender)
+        let destinationVC = segue.destination as? MapHomeViewController
+        destinationVC?.backEnabled=false
+    }
+    
     
 
 }

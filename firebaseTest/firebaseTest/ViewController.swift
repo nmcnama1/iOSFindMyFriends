@@ -40,6 +40,7 @@ class ViewController: UIViewController {
             self.logoutButton.alpha = 0.0
             self.UsernameLabel.text = ""
         }
+        self.navigationItem.setHidesBackButton(true, animated: false)
     }
 
     override func didReceiveMemoryWarning() {
@@ -109,6 +110,12 @@ class ViewController: UIViewController {
         self.ref.child("locations").child((user?.uid)!).setValue(["lat": "20.43", "lng":"5.11", "name": "Spike"])
     }
     */
-
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        print(sender)
+        let destinationVC = segue.destination as? MapHomeViewController
+        destinationVC?.backEnabled=false
+    }
 }
 
