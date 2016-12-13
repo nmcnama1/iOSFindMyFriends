@@ -36,6 +36,8 @@
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Allowing access to your location makes your position visible on the map.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Makes position visible on the map when app is running in the background.</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

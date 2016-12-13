@@ -9,12 +9,12 @@
 /* Begin PBXBuildFile section */
 		6B9FE236D9C40A7D74DA9CB1 /* Pods_firebaseTestTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D90B4BD00555E7938A7879B /* Pods_firebaseTestTests.framework */; };
 		A55DEFBC342D980CCE079309 /* Pods_firebaseTestUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDB49A78EF85FF52AA2D7F07 /* Pods_firebaseTestUITests.framework */; };
+		AE1AF7601E009A65003FFAC1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE1AF75E1E009A65003FFAC1 /* Main.storyboard */; };
 		AE7005041DFDFF4900BA99BA /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7005031DFDFF4900BA99BA /* SettingsTableViewController.swift */; };
 		AE7005061DFF613300BA99BA /* AccountTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7005051DFF613100BA99BA /* AccountTableViewController.swift */; };
 		AEC5C80B1DD378DE001D16D1 /* MapHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEC5C80A1DD378DD001D16D1 /* MapHomeViewController.swift */; };
 		D142424C1DCA33BD00ACFA3B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D142424B1DCA33BD00ACFA3B /* AppDelegate.swift */; };
 		D142424E1DCA33BD00ACFA3B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D142424D1DCA33BD00ACFA3B /* ViewController.swift */; };
-		D14242511DCA33BD00ACFA3B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D142424F1DCA33BD00ACFA3B /* Main.storyboard */; };
 		D14242531DCA33BD00ACFA3B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D14242521DCA33BD00ACFA3B /* Assets.xcassets */; };
 		D14242561DCA33BD00ACFA3B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D14242541DCA33BD00ACFA3B /* LaunchScreen.storyboard */; };
 		D14242611DCA33BD00ACFA3B /* firebaseTestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14242601DCA33BD00ACFA3B /* firebaseTestTests.swift */; };
@@ -49,6 +49,7 @@
 		53112A12F83040DA4E6E9B5B /* Pods-firebaseTestTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-firebaseTestTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-firebaseTestTests/Pods-firebaseTestTests.release.xcconfig"; sourceTree = "<group>"; };
 		9CC056510802670F5C0281F3 /* Pods-firebaseTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-firebaseTest.release.xcconfig"; path = "Pods/Target Support Files/Pods-firebaseTest/Pods-firebaseTest.release.xcconfig"; sourceTree = "<group>"; };
 		9D90B4BD00555E7938A7879B /* Pods_firebaseTestTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_firebaseTestTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE1AF75F1E009A65003FFAC1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AE7005031DFDFF4900BA99BA /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		AE7005051DFF613100BA99BA /* AccountTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountTableViewController.swift; sourceTree = "<group>"; };
 		AEC5C80A1DD378DD001D16D1 /* MapHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapHomeViewController.swift; sourceTree = "<group>"; };
@@ -57,7 +58,6 @@
 		D14242481DCA33BD00ACFA3B /* firebaseTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = firebaseTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D142424B1DCA33BD00ACFA3B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D142424D1DCA33BD00ACFA3B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		D14242501DCA33BD00ACFA3B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D14242521DCA33BD00ACFA3B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D14242551DCA33BD00ACFA3B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D14242571DCA33BD00ACFA3B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -143,7 +143,7 @@
 				AE7005051DFF613100BA99BA /* AccountTableViewController.swift */,
 				D142424B1DCA33BD00ACFA3B /* AppDelegate.swift */,
 				D142424D1DCA33BD00ACFA3B /* ViewController.swift */,
-				D142424F1DCA33BD00ACFA3B /* Main.storyboard */,
+				AE1AF75E1E009A65003FFAC1 /* Main.storyboard */,
 				D15D11EF1DD2562000D9363A /* AccountCreationViewController.swift */,
 				AEC5C80A1DD378DD001D16D1 /* MapHomeViewController.swift */,
 				D14242521DCA33BD00ACFA3B /* Assets.xcassets */,
@@ -303,7 +303,7 @@
 				D14242561DCA33BD00ACFA3B /* LaunchScreen.storyboard in Resources */,
 				D14787681DCCC81D00D815F0 /* GoogleService-Info.plist in Resources */,
 				D14242531DCA33BD00ACFA3B /* Assets.xcassets in Resources */,
-				D14242511DCA33BD00ACFA3B /* Main.storyboard in Resources */,
+				AE1AF7601E009A65003FFAC1 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -508,10 +508,10 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		D142424F1DCA33BD00ACFA3B /* Main.storyboard */ = {
+		AE1AF75E1E009A65003FFAC1 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				D14242501DCA33BD00ACFA3B /* Base */,
+				AE1AF75F1E009A65003FFAC1 /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";

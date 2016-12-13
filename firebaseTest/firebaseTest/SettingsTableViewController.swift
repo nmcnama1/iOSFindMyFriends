@@ -20,19 +20,28 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDataSource
     let ref = FIRDatabase.database().reference(withPath: "data")
     
     var pickerDataSource = ["1 minute", "5 minutes", "10 minutes"];
-    var pickerVisible = false;
-    
+    var pickerVisible = false
+    var autoVisible = true
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    var cameFrom = "Map"
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.pickerView.dataSource = self;
         self.pickerView.delegate = self;
+        Killswitch.setOn(appDelegate.sharing, animated: false)
+        AutoUpdateSwitch.setOn(true, animated: true)
+
         // Uncomment the following line to preserve selection between presentations
         //self.clearsSelectionOnViewWillAppear = false
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        Killswitch.isOn =  UserDefaults.standard.bool(forKey: "switchState")
-
+        
+       // Killswitch.isOn =  UserDefaults.standard.bool(forKey: "switchState")
+        if(cameFrom=="Map") {
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Map", style: .plain, target: self, action: #selector(SettingsTableViewController.reloadMap))
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -72,14 +81,20 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDataSource
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (indexPath==[0,2]) {
-            if (pickerVisible) {
+        if (indexPath==[0,1]) {
+            if (!Killswitch.isOn) {
                 return 0.0
-            } else {
+            } /* else {
                 return 44.0
-            }
+            }*/
+        } else if (indexPath==[0,2]) {
+            if (pickerVisible || !Killswitch.isOn) {
+                return 0.0
+            } /*else {
+                return 44.0
+            }*/
         } else if (indexPath==[0,3]) {
-            if (pickerVisible) {
+            if (pickerVisible || !Killswitch.isOn) {
                 return 0.0
             } else {
                 return 165.0
@@ -173,11 +188,16 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDataSource
     
     @IBAction func killswitchFlip(_ sender: AnyObject) {
         UserDefaults.standard.set(Killswitch.isOn, forKey: "switchState")
+        autoVisible = !autoVisible
+        tableView.reloadData()
         if(!Killswitch.isOn) {
             //Kill my location
+            appDelegate.sharing=false;
             self.ref.child("locations").child(FIRAuth.auth()?.currentUser?.uid as String!).removeValue()
         } else {//return my location
             print("We need to re-get the user's location, and I think the location manager needs to not just be defined in the maphomeviewcontroller!")
+            self.sendLocation()
+            appDelegate.sharing=true;
         }
     }
     @IBAction func confirmLogout() {
@@ -193,23 +213,25 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDataSource
         self.present(alert, animated: true, completion: nil)
     }
     
-    @IBAction func confirmDelete() {
-        
-        // create the alert
-        let alert = UIAlertController(title: "Confirm Delete", message: "Are you sure you want to delete your account?", preferredStyle: UIAlertControllerStyle.alert)
-        
-        // add the actions (buttons)
-        alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.default, handler: logoutAction))
-        alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.cancel, handler: nil))
-        
-        // show the alert
-        self.present(alert, animated: true, completion: nil)
-    }
     
     func logoutAction(alert: UIAlertAction!) {
         
         try! FIRAuth.auth()?.signOut()
         self.performSegue(withIdentifier: "LogoutSegue", sender: self)
+    }
+    
+    func sendLocation() {
+        let user = FIRAuth.auth()?.currentUser
+        var name=""
+        ref.child("users").child((user?.uid)!).observe(FIRDataEventType.value, with: { (snapshot) in
+            let dict = snapshot.value as? [String : AnyObject] ?? [:]
+            name=dict["name"] as! String
+            self.ref.child("locations").child((user?.uid)!).setValue(["lat": "-40.1", "lng":"100.5", "name": name])
+        })
+    }
+    
+    func reloadMap() {
+        self.performSegue(withIdentifier: "BackSegue", sender: self)
     }
 
 

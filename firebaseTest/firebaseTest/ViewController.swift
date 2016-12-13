@@ -18,7 +18,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var logoutButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var accountButton: UIButton!
-    
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     let ref = FIRDatabase.database().reference(withPath: "data")
     
@@ -33,8 +33,9 @@ class ViewController: UIViewController {
             self.passwordField.alpha = 0.0
             self.loginButton.alpha = 0.0
             self.accountButton.alpha = 0.0
-            
-            self.performSegue(withIdentifier: "SuccessfulLoginSegue", sender: self)         }
+            self.getSharing()
+            self.performSegue(withIdentifier: "SuccessfulLoginSegue", sender: self)
+        }
         else
         {
             self.logoutButton.alpha = 0.0
@@ -110,12 +111,22 @@ class ViewController: UIViewController {
         self.ref.child("locations").child((user?.uid)!).setValue(["lat": "20.43", "lng":"5.11", "name": "Spike"])
     }
     */
+    /*
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        print(sender)
-        let destinationVC = segue.destination as? MapHomeViewController
-        destinationVC?.backEnabled=false
+    }*/
+    
+    func getSharing() {
+        ref.child("locations").child(FIRAuth.auth()?.currentUser?.uid as String!).observeSingleEvent(of:FIRDataEventType.value, with: { (snapshot) in
+            let dict = snapshot.value as? [String : AnyObject] ?? [:]
+            if (dict.count==0) {
+                self.appDelegate.sharing=false
+            } else {
+                self.appDelegate.sharing=true
+            }
+
+        })
     }
 }
 

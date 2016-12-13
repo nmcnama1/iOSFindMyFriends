@@ -22,80 +22,52 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
     var newLocs = [String]()
     var currentLat = 0.00
     var currentLng = 0.00
-    var backEnabled = true
-
+    var markers = [GMSMarker]()
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    var mapView = GMSMapView()
     
     var didFindMyLocation = false
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.locationManager.delegate = self
-        self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.requestAlwaysAuthorization()
         self.locationManager.startUpdatingLocation()
-        
+        print(appDelegate.sharing)
         // Do any additional setup after loading the view.
         // Create a GMSCameraPosition that tells the map to display the
-        // coordinate -33.86,151.20 at zoom level 6.
         let camera = GMSCameraPosition.camera(withLatitude: self.latPassed, longitude: self.lngPassed, zoom: 6.904)
-        let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
-        view = mapView
+        self.mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
+        view = self.mapView
         mapView.isMyLocationEnabled = true
         mapView.settings.myLocationButton = true
-
         //marker2.snippet = "House"
 
         let selfMarker = GMSMarker()
 
         self.ref.child("locations").child((FIRAuth.auth()?.currentUser?.uid)!).observe(FIRDataEventType.value, with: { (snapshot) in
             let locDict = snapshot.value as? [String : AnyObject] ?? [:]
-            print(locDict)
             if (locDict.count != 0 ) {
                 selfMarker.position = CLLocationCoordinate2D( latitude: Double(locDict["lat"] as! String)!, longitude: Double(locDict["lng"] as! String)! )
                 selfMarker.icon = GMSMarker.markerImage(with: .black)
-                selfMarker.title="You"
-                selfMarker.map = mapView
+                selfMarker.title="You" //should this say me?
+                selfMarker.map = self.mapView
                 selfMarker.zIndex=9
+            } else {
+                selfMarker.map = nil
             }
         })
         
-        ref.child("friends").child(FIRAuth.auth()?.currentUser?.uid as String!).observe(FIRDataEventType.value, with: { (snapshot) in
-            let dict = snapshot.value as? [String : AnyObject] ?? [:]
-            for item in dict {
-                if (item.value as? NSNumber == 1 && item.key != FIRAuth.auth()?.currentUser?.uid) {
-                    self.ref.child("locations").child(item.key).observe(FIRDataEventType.value, with: { (snapshot) in
-                        let locDict = snapshot.value as? [String : AnyObject] ?? [:]
-                        if ( locDict["name"] != nil  && locDict["lat"] != nil && locDict["lng"] != nil) {
-                            let friendMarker = GMSMarker()
-                            friendMarker.icon = GMSMarker.markerImage(with: .green)
-                            friendMarker.position = CLLocationCoordinate2D( latitude: Double(locDict["lat"] as! String)!, longitude: Double(locDict["lng"] as! String)! )
-                            friendMarker.title=(locDict["name"] as! String)
-                            friendMarker.map = mapView
-                            if ((locDict["name"] as! String) == self.namePassed) {
-                                friendMarker.zIndex=10
-                                mapView.selectedMarker=friendMarker
-                            }
-                        }
-                    })
-                }
-            }
-            let button = UIButton(frame: CGRect(x: 5, y: self.view.frame.size.height - 55, width: 100, height: 50))
-            button.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
-            button.setTitle("Check in", for: .normal)
-            button.addTarget(self, action: #selector(MapHomeViewController.sendLocAction), for: UIControlEvents.touchUpInside)
-            
-            let button2 = UIButton(frame: CGRect(x: self.view.frame.size.width - 105, y: self.view.frame.size.height - 55, width: 100, height: 50))
-            button2.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
-            button2.setTitle("Friends", for: .normal)
-            button2.addTarget(self, action: #selector(MapHomeViewController.goToFriends), for: UIControlEvents.touchUpInside)
-            self.view.addSubview(button)
-            self.view.addSubview(button2)
-
+        ref.child("locations").observe(FIRDataEventType.value, with: { (snapshot) in
+            self.resetFriendMarkers()
+            })
+        ref.child("friends").child((FIRAuth.auth()?.currentUser?.uid)!).observe(FIRDataEventType.value, with: { (snapshot) in
+            self.resetFriendMarkers()
         })
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(MapHomeViewController.goToSettings))
-        
-        if (!self.backEnabled) {
-            self.navigationItem.setHidesBackButton(true, animated: false)
-        }
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(MapHomeViewController.hideBackButton))
+
+        self.navigationItem.setHidesBackButton(true, animated: false)
         /*
         let coordinate₀ = CLLocation(latitude: 5.0, longitude: 5.0)
         let coordinate₁ = CLLocation(latitude: 5.0, longitude: 3.0)
@@ -124,24 +96,24 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
         
     }
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        let destinationVC = segue.destination as? SettingsTableViewController
+        destinationVC?.cameFrom="Map"
     }
-    */
+ 
     
     func goToFriends(){
         self.performSegue(withIdentifier: "MaptoTableSegue", sender: self)
-        self.backEnabled=true
     }
     
     func goToSettings(){
         self.performSegue(withIdentifier: "MaptoSettings_Segue", sender: self)
-        self.backEnabled=true
     }
     
     @IBAction func sendLocAction(_ sender: AnyObject) {
@@ -153,6 +125,51 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
             self.ref.child("locations").child((user?.uid)!).setValue(["lat": String(self.currentLat), "lng":String(self.currentLng), "name": name])
         })
         
+    }
+    
+    func resetFriendMarkers() {
+        for marker in self.markers {
+            marker.map=nil
+        }
+        self.ref.child("friends").child(FIRAuth.auth()?.currentUser?.uid as String!).observe(FIRDataEventType.value, with: { (snapshot) in
+            let dict = snapshot.value as? [String : AnyObject] ?? [:]
+            for item in dict {
+                if (item.value as? NSNumber == 1 && item.key != FIRAuth.auth()?.currentUser?.uid) {
+                    self.ref.child("locations").child(item.key).observe(FIRDataEventType.value, with: { (snapshot) in
+                        let locDict = snapshot.value as? [String : AnyObject] ?? [:]
+                        if ( locDict["name"] != nil  && locDict["lat"] != nil && locDict["lng"] != nil) {
+                            let friendMarker = GMSMarker()
+                            self.markers.append(friendMarker)
+                            friendMarker.icon = GMSMarker.markerImage(with: .green)
+                            friendMarker.position = CLLocationCoordinate2D( latitude: Double(locDict["lat"] as! String)!, longitude: Double(locDict["lng"] as! String)! )
+                            friendMarker.title=(locDict["name"] as! String)
+                            friendMarker.map = self.mapView
+                            if ((locDict["name"] as! String) == self.namePassed) {
+                                friendMarker.zIndex=10
+                                self.mapView.selectedMarker=friendMarker
+                            }
+                        }
+                    })
+                }
+            }
+            if (self.appDelegate.sharing) {
+                let checkinButton = UIButton(frame: CGRect(x: 110, y: self.view.frame.size.height - 55, width: 100, height: 50))
+                checkinButton.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+                checkinButton.setTitle("Check in", for: .normal)
+                checkinButton.addTarget(self, action: #selector(MapHomeViewController.sendLocAction), for: UIControlEvents.touchUpInside)
+                self.view.addSubview(checkinButton)
+            }
+            
+            let friendsButton = UIButton(frame: CGRect(x: 5, y: self.view.frame.size.height - 55, width: 100, height: 50))
+            friendsButton.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+            friendsButton.setTitle("Friends", for: .normal)
+            friendsButton.addTarget(self, action: #selector(MapHomeViewController.goToFriends), for: UIControlEvents.touchUpInside)
+            self.view.addSubview(friendsButton)
+            
+        })
+    }
+    
+    func hideBackButton() {
     }
 
 }

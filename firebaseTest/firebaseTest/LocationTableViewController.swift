@@ -151,7 +151,7 @@ class LocationTableViewController: UITableViewController {
             self.passLong = Double(self.locs[indexPath.row].lng)!
             self.passName = self.locs[indexPath.row].name
             
-            self.performSegue(withIdentifier: "tableToMapSegue", sender: self)
+            self.performSegue(withIdentifier: "tableToMapSegue", sender: "friendCell")
         }
         
     }
@@ -201,15 +201,19 @@ class LocationTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        print(sender)
+        if(sender as! String == "friendCell") {
         let destinationVC = segue.destination as? MapHomeViewController
         destinationVC?.latPassed=self.passLat
         destinationVC?.lngPassed=self.passLong
         destinationVC?.namePassed=self.passName
+        } else {
+            let destinationVC = segue.destination as? SettingsTableViewController
+            destinationVC?.cameFrom="Friends"
+        }
     }
     
     func goToSettings(){
-        self.performSegue(withIdentifier: "FriendstoSettingsSegue", sender: self)
+        self.performSegue(withIdentifier: "FriendstoSettingsSegue", sender: "navButton")
     }
 
 }
