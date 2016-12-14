@@ -30,8 +30,21 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDataSource
         self.pickerView.dataSource = self;
         self.pickerView.delegate = self;
         Killswitch.setOn(appDelegate.sharing, animated: false)
-        AutoUpdateSwitch.setOn(true, animated: true)
-
+        if(appDelegate.interval==0) {
+            AutoUpdateSwitch.setOn(false, animated: false)
+            var pickerVisible=false
+        } else {
+            var pickerVisible=true
+            AutoUpdateSwitch.setOn(true, animated: false)
+            if (appDelegate.interval==1) {
+                pickerView.selectRow(0, inComponent: 0, animated: false)
+            } else if (appDelegate.interval==5) {
+                pickerView.selectRow(1, inComponent: 0, animated: false)
+            } else if (appDelegate.interval==10) {
+                pickerView.selectRow(2, inComponent: 0, animated: false)
+            }
+        }
+       // AutoUpdateSwitch.setOn(true, animated: true)
         // Uncomment the following line to preserve selection between presentations
         //self.clearsSelectionOnViewWillAppear = false
         
@@ -88,13 +101,13 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDataSource
                 return 44.0
             }*/
         } else if (indexPath==[0,2]) {
-            if (pickerVisible || !Killswitch.isOn) {
+            if (!AutoUpdateSwitch.isOn || !Killswitch.isOn) {
                 return 0.0
             } /*else {
                 return 44.0
             }*/
         } else if (indexPath==[0,3]) {
-            if (pickerVisible || !Killswitch.isOn) {
+            if (!AutoUpdateSwitch.isOn || !Killswitch.isOn) {
                 return 0.0
             } else {
                 return 165.0
@@ -158,6 +171,18 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDataSource
     */
     @IBAction func AutoUpdateChange(_ sender: AnyObject) {
         pickerVisible = !pickerVisible
+        if(!AutoUpdateSwitch.isOn) {
+            appDelegate.interval=0
+        } else {
+            let currentPicked = pickerView.selectedRow(inComponent: 0)
+            if (currentPicked==0) {
+                appDelegate.interval=1
+            } else if (currentPicked==1) {
+                appDelegate.interval=5
+            } else if (currentPicked==2) {
+                appDelegate.interval=10
+            }
+        }
         tableView.reloadData()
     }
     
@@ -176,10 +201,13 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDataSource
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if (row==0) {
             print("1 minute")
+            appDelegate.interval=1
         } else if (row==1) {
             print("5 minutes")
+            appDelegate.interval=5
         } else if (row==2) {
             print("10 minutes")
+            appDelegate.interval=10
         }
         IntervalText.text = pickerDataSource[row]
         return pickerDataSource[row]
@@ -195,7 +223,7 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDataSource
             appDelegate.sharing=false;
             self.ref.child("locations").child(FIRAuth.auth()?.currentUser?.uid as String!).removeValue()
         } else {//return my location
-            print("We need to re-get the user's location, and I think the location manager needs to not just be defined in the maphomeviewcontroller!")
+            //We need to re-get the user's location, and I think the location manager needs to not just be defined in the maphomeviewcontroller
             self.sendLocation()
             appDelegate.sharing=true;
         }

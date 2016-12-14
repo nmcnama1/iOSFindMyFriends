@@ -74,7 +74,6 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
         
         let distanceInMeters = coordinate₀.distance(from: coordinate₁)
         print(distanceInMeters)
-        print("asdfasdf")
         */
         
     }

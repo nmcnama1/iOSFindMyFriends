@@ -21,6 +21,8 @@ class ViewController: UIViewController {
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     let ref = FIRDatabase.database().reference(withPath: "data")
+    let prefs = UserDefaults.standard
+
     
     override func viewDidLoad() {
         super.viewDidLoad()

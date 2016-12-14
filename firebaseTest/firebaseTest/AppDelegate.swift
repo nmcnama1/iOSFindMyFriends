@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var locationFixAchieved : Bool = false
     var locationStatus : NSString = "Not Started"
     var sharing : Bool = false
+    var interval : Int = 0
     
     override init(){
         super.init()
@@ -113,7 +114,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
 
 }
 
