@@ -17,13 +17,15 @@ struct info {
     var lng = "0.00"
 }
 
-class LocationTableViewController: UITableViewController {
+class LocationTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
     var locs = [info]()
     var requests = [info]()
+    var addFriend = "Add Friend"
     let ref = FIRDatabase.database().reference(withPath: "data")
     var passLat = 0.00
     var passLong = 0.00
     var passName = "test"
+    var passID = ""
     var friendList = [String]()
     
     override func viewDidLoad() {
@@ -35,6 +37,7 @@ class LocationTableViewController: UITableViewController {
         ref.child("friends").child(FIRAuth.auth()?.currentUser?.uid as String!).observe(FIRDataEventType.value, with: { (snapshot) in
             let dict = snapshot.value as? [String : AnyObject] ?? [:]
             self.locs = [info]()
+            self.requests = [info]()
             for item in dict {
                if (item.value as? NSNumber == 1 && item.key != FIRAuth.auth()?.currentUser?.uid) {
                     self.friendList.append(item.key)
@@ -82,11 +85,14 @@ class LocationTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        if(section == 0){
+        if(section == 1){
             return "Friend Requests";
         }
-        else if(section == 1){
+        else if(section == 2){
             return "Friends";
+        }
+        else if(section == 0){
+            return nil;
         }
         else{
             return "SECTION"
@@ -104,16 +110,19 @@ class LocationTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 2;
+        return 3;
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        if(section == 0){
+        if(section == 1){
             return requests.count;
         }
-        else if (section == 1){
+        else if (section == 2){
             return locs.count;
+        }
+        else if(section == 0){
+            return 1;
         }
         else{
             return 0;
@@ -125,11 +134,23 @@ class LocationTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "locCell", for: indexPath)
 
         // Configure the cell...
-        if(indexPath.section == 0){
+        if(indexPath.section == 1){
             cell.textLabel!.text = self.requests[indexPath.row].name;
+            cell.backgroundColor = UIColor.init(red: 1.0, green: 1.0, blue: 0.8, alpha: 1.0);
         }
-        else if(indexPath.section == 1){
+        else if(indexPath.section == 2){
             cell.textLabel!.text = self.locs[indexPath.row].name + ": (" + self.locs[indexPath.row].lat + ", " + self.locs[indexPath.row].lng + ")"
+            if(indexPath.row % 2 == 0){
+                cell.backgroundColor = UIColor.init(red: 0.85, green: 1.0, blue: 1.0, alpha: 1.0);
+            }
+            else{
+                cell.backgroundColor = UIColor.init(red: 0.96, green: 0.96, blue: 0.96, alpha: 1.0);
+            }
+            
+        }
+        else if(indexPath.section == 0){
+            cell.textLabel?.text = "+   Add Friend";
+            cell.backgroundColor = UIColor.init(red: 0.97, green: 0.97, blue: 0.97, alpha: 1.0);
         }
         return cell
     }
@@ -140,21 +161,31 @@ class LocationTableViewController: UITableViewController {
    //     var myVC = storyboard?.instantiateViewController(withIdentifier: "MapHomeViewController") as! MapHomeViewController
         
         
-        if(indexPath.section == 0){
+        if(indexPath.section == 1){
             ref.child("friends").child(FIRAuth.auth()?.currentUser?.uid as String!).child(requests[indexPath.row].id).setValue(1);
             ref.child("friends").child(requests[indexPath.row].id).child(FIRAuth.auth()?.currentUser?.uid as String!).setValue(1);
             requests.remove(at: indexPath.row);
         }
+        
         //Friend is clicked
-        if(indexPath.section == 1){
+        if(indexPath.section == 2){
+            
+            
+            self.passID = self.locs[indexPath.row].id;
             self.passLat = Double(self.locs[indexPath.row].lat)!
             self.passLong = Double(self.locs[indexPath.row].lng)!
             self.passName = self.locs[indexPath.row].name
             
-            self.performSegue(withIdentifier: "tableToMapSegue", sender: "friendCell")
+            self.performSegue(withIdentifier: "friendOptionsSegue", sender: self);
+            //self.performSegue(withIdentifier: "tableToMapSegue", sender: "friendCell")
+        }
+        if(indexPath.section == 0){
+            self.performSegue(withIdentifier: "addFriendSegue", sender: self);
         }
         
     }
+    
+    
     
     func goHome() {
         self.performSegue(withIdentifier: "returnToHomeSegue", sender: self)
@@ -201,15 +232,39 @@ class LocationTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        if(sender as! String == "friendCell") {
-        let destinationVC = segue.destination as? MapHomeViewController
-        destinationVC?.latPassed=self.passLat
-        destinationVC?.lngPassed=self.passLong
-        destinationVC?.namePassed=self.passName
-        } else {
-            let destinationVC = segue.destination as? SettingsTableViewController
+        if(segue.identifier == "friendOptionsSegue"){
+            let vc = segue.destination as! FriendOptionsViewController;
+            let controller = vc.popoverPresentationController;
+            if(controller != nil){
+                controller?.delegate = self;
+            }
+            
+            vc.latPassed=self.passLat;
+            vc.lngPassed=self.passLong
+            vc.namePassed=self.passName
+            vc.passedID=self.passID;
+        }
+        if(segue.identifier == "addFriendSegue"){
+            let vc = segue.destination as! AddFriendViewController;
+            let controller = vc.popoverPresentationController;
+            if(controller != nil){
+                controller?.delegate = self;
+            }
+        }
+        //if(sender as! String == "friendCell") {
+       // let destinationVC = segue.destination as? MapHomeViewController
+        //destinationVC?.latPassed=self.passLat
+        //destinationVC?.lngPassed=self.passLong
+       // destinationVC?.namePassed=self.passName
+       //}
+        else {
+           let destinationVC = segue.destination as? SettingsTableViewController
             destinationVC?.cameFrom="Friends"
         }
+    }
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none;
     }
     
     func goToSettings(){

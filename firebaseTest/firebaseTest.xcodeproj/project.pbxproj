@@ -13,6 +13,7 @@
 		AE7005041DFDFF4900BA99BA /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7005031DFDFF4900BA99BA /* SettingsTableViewController.swift */; };
 		AE7005061DFF613300BA99BA /* AccountTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7005051DFF613100BA99BA /* AccountTableViewController.swift */; };
 		AEC5C80B1DD378DE001D16D1 /* MapHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEC5C80A1DD378DD001D16D1 /* MapHomeViewController.swift */; };
+		D12470011E00F9D70004A918 /* FriendOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12470001E00F9D70004A918 /* FriendOptionsViewController.swift */; };
 		D142424C1DCA33BD00ACFA3B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D142424B1DCA33BD00ACFA3B /* AppDelegate.swift */; };
 		D142424E1DCA33BD00ACFA3B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D142424D1DCA33BD00ACFA3B /* ViewController.swift */; };
 		D14242531DCA33BD00ACFA3B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D14242521DCA33BD00ACFA3B /* Assets.xcassets */; };
@@ -23,6 +24,7 @@
 		D15D11F01DD2562000D9363A /* AccountCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15D11EF1DD2562000D9363A /* AccountCreationViewController.swift */; };
 		D18849C61DDB965200FB0698 /* LocationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18849C51DDB965200FB0698 /* LocationTableViewController.swift */; };
 		D1B242FD5D3F05DEB12C3E77 /* Pods_firebaseTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17B426622B77A42A5ED74DCB /* Pods_firebaseTest.framework */; };
+		D1ECEFAC1E01144700CA500F /* AddFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ECEFAB1E01144700CA500F /* AddFriendViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,7 @@
 		AEC5C80A1DD378DD001D16D1 /* MapHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapHomeViewController.swift; sourceTree = "<group>"; };
 		C1E3474CD84A50068A175460 /* Pods-firebaseTestTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-firebaseTestTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-firebaseTestTests/Pods-firebaseTestTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C3B33EBCE321570FAC2F3DC4 /* Pods-firebaseTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-firebaseTest.debug.xcconfig"; path = "Pods/Target Support Files/Pods-firebaseTest/Pods-firebaseTest.debug.xcconfig"; sourceTree = "<group>"; };
+		D12470001E00F9D70004A918 /* FriendOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendOptionsViewController.swift; sourceTree = "<group>"; };
 		D14242481DCA33BD00ACFA3B /* firebaseTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = firebaseTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D142424B1DCA33BD00ACFA3B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D142424D1DCA33BD00ACFA3B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -70,6 +73,7 @@
 		D14787671DCCC81D00D815F0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D15D11EF1DD2562000D9363A /* AccountCreationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreationViewController.swift; sourceTree = "<group>"; };
 		D18849C51DDB965200FB0698 /* LocationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationTableViewController.swift; sourceTree = "<group>"; };
+		D1ECEFAB1E01144700CA500F /* AddFriendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFriendViewController.swift; sourceTree = "<group>"; };
 		FDB49A78EF85FF52AA2D7F07 /* Pods_firebaseTestUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_firebaseTestUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -142,8 +146,10 @@
 				AE7005031DFDFF4900BA99BA /* SettingsTableViewController.swift */,
 				AE7005051DFF613100BA99BA /* AccountTableViewController.swift */,
 				D142424B1DCA33BD00ACFA3B /* AppDelegate.swift */,
+				D1ECEFAB1E01144700CA500F /* AddFriendViewController.swift */,
 				D142424D1DCA33BD00ACFA3B /* ViewController.swift */,
 				AE1AF75E1E009A65003FFAC1 /* Main.storyboard */,
+				D12470001E00F9D70004A918 /* FriendOptionsViewController.swift */,
 				D15D11EF1DD2562000D9363A /* AccountCreationViewController.swift */,
 				AEC5C80A1DD378DD001D16D1 /* MapHomeViewController.swift */,
 				D14242521DCA33BD00ACFA3B /* Assets.xcassets */,
@@ -469,8 +475,10 @@
 				AEC5C80B1DD378DE001D16D1 /* MapHomeViewController.swift in Sources */,
 				D142424E1DCA33BD00ACFA3B /* ViewController.swift in Sources */,
 				AE7005061DFF613300BA99BA /* AccountTableViewController.swift in Sources */,
+				D1ECEFAC1E01144700CA500F /* AddFriendViewController.swift in Sources */,
 				D15D11F01DD2562000D9363A /* AccountCreationViewController.swift in Sources */,
 				D18849C61DDB965200FB0698 /* LocationTableViewController.swift in Sources */,
+				D12470011E00F9D70004A918 /* FriendOptionsViewController.swift in Sources */,
 				D142424C1DCA33BD00ACFA3B /* AppDelegate.swift in Sources */,
 				AE7005041DFDFF4900BA99BA /* SettingsTableViewController.swift in Sources */,
 			);
