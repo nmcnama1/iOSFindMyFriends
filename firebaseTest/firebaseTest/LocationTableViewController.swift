@@ -30,8 +30,10 @@ class LocationTableViewController: UITableViewController, UIPopoverPresentationC
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(FIRAuth.auth()?.currentUser?.uid as String!)
 
+        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(LocationTableViewController.longPress))
+        self.view.addGestureRecognizer(longPressRecognizer)
+        
         self.locs = [info]()
         self.requests = [info]()
         ref.child("friends").child(FIRAuth.auth()?.currentUser?.uid as String!).observe(FIRDataEventType.value, with: { (snapshot) in
@@ -144,7 +146,7 @@ class LocationTableViewController: UITableViewController, UIPopoverPresentationC
                 cell.backgroundColor = UIColor.init(red: 0.85, green: 1.0, blue: 1.0, alpha: 1.0);
             }
             else{
-                cell.backgroundColor = UIColor.init(red: 0.96, green: 0.96, blue: 0.96, alpha: 1.0);
+                cell.backgroundColor = UIColor.init(red: 0.99, green: 0.99, blue: 0.99, alpha: 1.0);
             }
             
         }
@@ -157,10 +159,6 @@ class LocationTableViewController: UITableViewController, UIPopoverPresentationC
     
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-   //     var myVC = storyboard?.instantiateViewController(withIdentifier: "MapHomeViewController") as! MapHomeViewController
-        
-        
         if(indexPath.section == 1){
             ref.child("friends").child(FIRAuth.auth()?.currentUser?.uid as String!).child(requests[indexPath.row].id).setValue(1);
             ref.child("friends").child(requests[indexPath.row].id).child(FIRAuth.auth()?.currentUser?.uid as String!).setValue(1);
@@ -170,26 +168,21 @@ class LocationTableViewController: UITableViewController, UIPopoverPresentationC
         //Friend is clicked
         if(indexPath.section == 2){
             
-            
             self.passID = self.locs[indexPath.row].id;
             self.passLat = Double(self.locs[indexPath.row].lat)!
             self.passLong = Double(self.locs[indexPath.row].lng)!
             self.passName = self.locs[indexPath.row].name
             
-            self.performSegue(withIdentifier: "friendOptionsSegue", sender: self);
-            //self.performSegue(withIdentifier: "tableToMapSegue", sender: "friendCell")
+            self.performSegue(withIdentifier: "tableToMapSegue", sender: "friendCell")
         }
         if(indexPath.section == 0){
-            self.performSegue(withIdentifier: "addFriendSegue", sender: self);
+            self.performSegue(withIdentifier: "addFriendSegue", sender: "addFriend");
         }
+        tableView.deselectRow(at: indexPath, animated: true)
         
     }
     
-    
-    
-    func goHome() {
-        self.performSegue(withIdentifier: "returnToHomeSegue", sender: self)
-    }
+
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -232,32 +225,21 @@ class LocationTableViewController: UITableViewController, UIPopoverPresentationC
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        if(segue.identifier == "friendOptionsSegue"){
-            let vc = segue.destination as! FriendOptionsViewController;
-            let controller = vc.popoverPresentationController;
-            if(controller != nil){
-                controller?.delegate = self;
-            }
-            
-            vc.latPassed=self.passLat;
-            vc.lngPassed=self.passLong
-            vc.namePassed=self.passName
-            vc.passedID=self.passID;
-        }
         if(segue.identifier == "addFriendSegue"){
             let vc = segue.destination as! AddFriendViewController;
             let controller = vc.popoverPresentationController;
             if(controller != nil){
                 controller?.delegate = self;
+                controller?.sourceView = self.view
+                controller?.sourceRect = CGRect(x:self.view.bounds.midX, y: 0,width: 10,height: 10)
             }
         }
-        //if(sender as! String == "friendCell") {
-       // let destinationVC = segue.destination as? MapHomeViewController
-        //destinationVC?.latPassed=self.passLat
-        //destinationVC?.lngPassed=self.passLong
-       // destinationVC?.namePassed=self.passName
-       //}
-        else {
+        else if(segue.identifier == "tableToMapSegue") {/*sender as! String == "friendCell") {*/
+            let destinationVC = segue.destination as? MapHomeViewController
+            destinationVC?.latPassed=self.passLat
+            destinationVC?.lngPassed=self.passLong
+            destinationVC?.namePassed=self.passName
+        } else {
            let destinationVC = segue.destination as? SettingsTableViewController
             destinationVC?.cameFrom="Friends"
         }
@@ -270,5 +252,39 @@ class LocationTableViewController: UITableViewController, UIPopoverPresentationC
     func goToSettings(){
         self.performSegue(withIdentifier: "FriendstoSettingsSegue", sender: "navButton")
     }
-
+    
+    
+    func longPress(longPressGestureRecognizer: UILongPressGestureRecognizer) {
+        
+        if longPressGestureRecognizer.state == UIGestureRecognizerState.began {
+            
+            let touchPoint = longPressGestureRecognizer.location(in: self.view)
+            if let indexPath = tableView.indexPathForRow(at: touchPoint) {
+                print(indexPath)
+                if(indexPath[0]==2) {
+                    print(indexPath)
+                    self.passID = self.locs[indexPath[1]].id;
+                    self.passLat = Double(self.locs[indexPath[1]].lat)!
+                    self.passLong = Double(self.locs[indexPath[1]].lng)!
+                    self.passName = self.locs[indexPath[1]].name
+                    
+                    // create the alert
+                    let alert = UIAlertController(title: "Confirm Deletion", message: "Are you sure you want to delete "+self.passName+" as your friend?", preferredStyle: UIAlertControllerStyle.alert)
+                    
+                    // add the actions (buttons)
+                    alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.default, handler: deleteFriend))
+                    alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.cancel, handler: nil))
+                    
+                    // show the alert
+                    self.present(alert, animated: true, completion: nil)
+                }
+                // your code here, get the row for the indexPath or do whatever you want
+            }
+        }
+    }
+    
+    func deleteFriend(alert: UIAlertAction!) {
+        ref.child("friends").child(FIRAuth.auth()?.currentUser?.uid as String!).child(self.passID).removeValue();
+        ref.child("friends").child(self.passID).child(FIRAuth.auth()?.currentUser?.uid as String!).removeValue();
+    }
 }

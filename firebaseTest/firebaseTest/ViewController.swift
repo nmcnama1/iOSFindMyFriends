@@ -10,27 +10,23 @@ import UIKit
 import Firebase
 import FirebaseDatabase
 
+
 class ViewController: UIViewController {
 
     @IBOutlet weak var UsernameLabel: UILabel!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
-    @IBOutlet weak var logoutButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var accountButton: UIButton!
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    
-    let ref = FIRDatabase.database().reference(withPath: "data")
-    let prefs = UserDefaults.standard
 
-    
+    let ref = FIRDatabase.database().reference(withPath: "data")
     override func viewDidLoad() {
         super.viewDidLoad()
   //      navigationController?.setNavigationBarHidden(false, animated: true)
         if let user = FIRAuth.auth()?.currentUser
         {
             self.getSharing()
-            self.logoutButton.alpha = 1.0
             self.UsernameLabel.text = user.email
             self.emailField.alpha = 0.0
             self.passwordField.alpha = 0.0
@@ -40,7 +36,6 @@ class ViewController: UIViewController {
         }
         else
         {
-            self.logoutButton.alpha = 0.0
             self.UsernameLabel.text = ""
         }
         self.navigationItem.setHidesBackButton(true, animated: false)
@@ -70,7 +65,6 @@ class ViewController: UIViewController {
                 {
                     self.getSharing()
                     
-                    self.logoutButton.alpha = 1.0
                     self.UsernameLabel.text = user!.email
                     self.emailField.text = ""
                     self.passwordField.text = ""
@@ -95,32 +89,9 @@ class ViewController: UIViewController {
         
     }
     
-    //Logout of current user
-    @IBAction func logoutAction(_ sender: AnyObject) {
-        try! FIRAuth.auth()?.signOut()
-        
-        self.UsernameLabel.text = ""
-        self.logoutButton.alpha = 0.0
-        self.emailField.text = ""
-        self.passwordField.text = ""
-        self.emailField.alpha = 1.0
-        self.passwordField.alpha = 1.0
-        self.loginButton.alpha = 1.0
-        self.accountButton.alpha = 1.0
-    }
+
     
-    //Testing sending info to Firebase
-   /* @IBAction func sendLocAction(_ sender: AnyObject) {
-        let user = FIRAuth.auth()?.currentUser
-        self.ref.child("locations").child((user?.uid)!).setValue(["lat": "20.43", "lng":"5.11", "name": "Spike"])
-    }
-    */
-    /*
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }*/
-    
+    //determines whether location sharing should be turned on based on whether a location is in the DB
     func getSharing() {
         ref.child("locations").child(FIRAuth.auth()?.currentUser?.uid as String!).observeSingleEvent(of:FIRDataEventType.value, with: { (snapshot) in
             let dict = snapshot.value as? [String : AnyObject] ?? [:]

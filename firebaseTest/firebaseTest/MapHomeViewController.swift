@@ -13,6 +13,32 @@ import FirebaseDatabase
 import CoreLocation
 
 
+class SharingManager {
+    let ref = FIRDatabase.database().reference(withPath: "data")
+    var timer = Timer()
+    var latNow: Double = 0.0
+    var lngNow: Double = 0.0
+    static let sharedInstance = SharingManager()
+    func startTimer(interval: Double) {
+        self.timer = Timer.scheduledTimer(timeInterval: interval, target:self, selector: #selector(SharingManager.sendLocationTimed), userInfo: nil, repeats: true)
+    }
+    
+    @objc func sendLocationTimed() {
+        let user = FIRAuth.auth()?.currentUser
+        var name=""
+        ref.child("users").child((user?.uid)!).observe(FIRDataEventType.value, with: { (snapshot) in
+            let dict = snapshot.value as? [String : AnyObject] ?? [:]
+            name=dict["name"] as! String
+            self.ref.child("locations").child((user?.uid)!).setValue(["lat": String(self.latNow), "lng":String(self.lngNow), "name": name])
+        })
+        
+    }
+    
+    func stopTimer() {
+        self.timer.invalidate()
+    }
+}
+
 class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
     var locationManager = CLLocationManager()
     var latPassed = 40.759211
@@ -25,24 +51,26 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
     var markers = [GMSMarker]()
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var mapView = GMSMapView()
+    var timer = Timer()
+
     
     var didFindMyLocation = false
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.locationManager.delegate = self
         self.locationManager.requestAlwaysAuthorization()
         self.locationManager.startUpdatingLocation()
-        print(appDelegate.sharing)
         // Do any additional setup after loading the view.
         // Create a GMSCameraPosition that tells the map to display the
-        let camera = GMSCameraPosition.camera(withLatitude: self.latPassed, longitude: self.lngPassed, zoom: 6.904)
+        let camera = GMSCameraPosition.camera(withLatitude: self.latPassed, longitude: self.lngPassed, zoom: 15)
         self.mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         view = self.mapView
         mapView.isMyLocationEnabled = true
         mapView.settings.myLocationButton = true
         //marker2.snippet = "House"
+        timer = Timer.scheduledTimer(timeInterval: 100, target:self, selector: #selector(MapHomeViewController.hideBackButton), userInfo: nil, repeats: true)
 
+        
         let selfMarker = GMSMarker()
 
         self.ref.child("locations").child((FIRAuth.auth()?.currentUser?.uid)!).observe(FIRDataEventType.value, with: { (snapshot) in
@@ -66,8 +94,21 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
         })
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(MapHomeViewController.goToSettings))
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(MapHomeViewController.hideBackButton))
-
-        self.navigationItem.setHidesBackButton(true, animated: false)
+        
+        if (self.appDelegate.sharing) {
+            let checkinButton = UIButton(frame: CGRect(x: 110, y: self.view.frame.size.height - 55, width: 100, height: 50))
+            checkinButton.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+            checkinButton.setTitle("Check in", for: .normal)
+            checkinButton.addTarget(self, action: #selector(MapHomeViewController.sendLocAction), for: UIControlEvents.touchUpInside)
+            self.view.addSubview(checkinButton)
+        }
+        
+        let friendsButton = UIButton(frame: CGRect(x: 5, y: self.view.frame.size.height - 55, width: 100, height: 50))
+        friendsButton.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+        friendsButton.setTitle("Friends", for: .normal)
+        friendsButton.addTarget(self, action: #selector(MapHomeViewController.goToFriends), for: UIControlEvents.touchUpInside)
+        self.view.addSubview(friendsButton)
+       // navigationController.setNavigationBarHidden(false, animated: true)
         /*
         let coordinate₀ = CLLocation(latitude: 5.0, longitude: 5.0)
         let coordinate₁ = CLLocation(latitude: 5.0, longitude: 3.0)
@@ -75,7 +116,8 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
         let distanceInMeters = coordinate₀.distance(from: coordinate₁)
         print(distanceInMeters)
         */
-        
+        self.navigationItem.setHidesBackButton(true, animated: false)
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -84,10 +126,10 @@ class MapHomeViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    //    let lat = locations.last?.coordinate.latitude
-   //     print(location!)
         self.currentLat=(locations.last?.coordinate.latitude)!
         self.currentLng=(locations.last?.coordinate.longitude)!
+        SharingManager.sharedInstance.latNow = self.currentLat
+        SharingManager.sharedInstance.lngNow = self.currentLng
     }
     
      func logoutAction(_ sender: AnyObject) {

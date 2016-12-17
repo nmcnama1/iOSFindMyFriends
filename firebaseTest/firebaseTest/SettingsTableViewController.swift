@@ -20,21 +20,21 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDataSource
     let ref = FIRDatabase.database().reference(withPath: "data")
     
     var pickerDataSource = ["1 minute", "5 minutes", "10 minutes"];
-    var pickerVisible = false
-    var autoVisible = true
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var cameFrom = "Map"
+    var invalidPickerAccess=0
+    var limit = 5
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.invalidPickerAccess=0
         self.pickerView.dataSource = self;
         self.pickerView.delegate = self;
         Killswitch.setOn(appDelegate.sharing, animated: false)
         if(appDelegate.interval==0) {
             AutoUpdateSwitch.setOn(false, animated: false)
-            var pickerVisible=false
+            self.limit=5
         } else {
-            var pickerVisible=true
             AutoUpdateSwitch.setOn(true, animated: false)
             if (appDelegate.interval==1) {
                 pickerView.selectRow(0, inComponent: 0, animated: false)
@@ -43,6 +43,7 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDataSource
             } else if (appDelegate.interval==10) {
                 pickerView.selectRow(2, inComponent: 0, animated: false)
             }
+            self.limit=7
         }
        // AutoUpdateSwitch.setOn(true, animated: true)
         // Uncomment the following line to preserve selection between presentations
@@ -97,15 +98,11 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDataSource
         if (indexPath==[0,1]) {
             if (!Killswitch.isOn) {
                 return 0.0
-            } /* else {
-                return 44.0
-            }*/
+            }
         } else if (indexPath==[0,2]) {
             if (!AutoUpdateSwitch.isOn || !Killswitch.isOn) {
                 return 0.0
-            } /*else {
-                return 44.0
-            }*/
+            }
         } else if (indexPath==[0,3]) {
             if (!AutoUpdateSwitch.isOn || !Killswitch.isOn) {
                 return 0.0
@@ -170,17 +167,23 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDataSource
     }
     */
     @IBAction func AutoUpdateChange(_ sender: AnyObject) {
-        pickerVisible = !pickerVisible
         if(!AutoUpdateSwitch.isOn) {
             appDelegate.interval=0
+            SharingManager.sharedInstance.stopTimer()
         } else {
             let currentPicked = pickerView.selectedRow(inComponent: 0)
             if (currentPicked==0) {
                 appDelegate.interval=1
+                SharingManager.sharedInstance.stopTimer()
+                SharingManager.sharedInstance.startTimer(interval: 60)
             } else if (currentPicked==1) {
                 appDelegate.interval=5
+                SharingManager.sharedInstance.stopTimer()
+                SharingManager.sharedInstance.startTimer(interval: 300)
             } else if (currentPicked==2) {
                 appDelegate.interval=10
+                SharingManager.sharedInstance.stopTimer()
+                SharingManager.sharedInstance.startTimer(interval: 600)
             }
         }
         tableView.reloadData()
@@ -199,32 +202,43 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDataSource
     
     //handles selection
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if (row==0) {
-            print("1 minute")
-            appDelegate.interval=1
-        } else if (row==1) {
-            print("5 minutes")
-            appDelegate.interval=5
-        } else if (row==2) {
-            print("10 minutes")
-            appDelegate.interval=10
+        print(self.invalidPickerAccess)
+        if (self.invalidPickerAccess>self.limit) {
+            if (row==0) {
+                appDelegate.interval=1
+                SharingManager.sharedInstance.stopTimer()
+                SharingManager.sharedInstance.startTimer(interval: 60)
+            } else if (row==1) {
+                appDelegate.interval=5
+                SharingManager.sharedInstance.stopTimer()
+                SharingManager.sharedInstance.startTimer(interval: 300)
+            } else if (row==2) {
+                appDelegate.interval=10
+                SharingManager.sharedInstance.stopTimer()
+                SharingManager.sharedInstance.startTimer(interval: 600)
+            }
+            IntervalText.text = pickerDataSource[row]
+            if(!AutoUpdateSwitch.isOn || !Killswitch.isOn) {
+                SharingManager.sharedInstance.stopTimer()
+                appDelegate.interval=0
         }
-        IntervalText.text = pickerDataSource[row]
+        }
+        self.invalidPickerAccess += 1
         return pickerDataSource[row]
     }
     ///////////////////////
     
     @IBAction func killswitchFlip(_ sender: AnyObject) {
         UserDefaults.standard.set(Killswitch.isOn, forKey: "switchState")
-        autoVisible = !autoVisible
         tableView.reloadData()
         if(!Killswitch.isOn) {
             //Kill my location
             appDelegate.sharing=false;
+            SharingManager.sharedInstance.stopTimer()
             self.ref.child("locations").child(FIRAuth.auth()?.currentUser?.uid as String!).removeValue()
         } else {//return my location
             //We need to re-get the user's location, and I think the location manager needs to not just be defined in the maphomeviewcontroller
-            self.sendLocation()
+            SharingManager.sharedInstance.sendLocationTimed()
             appDelegate.sharing=true;
         }
     }
