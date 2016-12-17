@@ -246,7 +246,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Account Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="InN-al-HCo">
-                                                    <frame key="frameInset" minX="8" minY="11" width="130" height="21"/>
+                                                    <frame key="frameInset" minX="16" minY="11" width="134" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -263,7 +263,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Logout" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h7v-d2-QYG">
-                                                    <frame key="frameInset" minX="8" minY="11" width="129" height="21"/>
+                                                    <frame key="frameInset" minX="17" minY="11" width="66" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -502,7 +502,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="tox-YL-hc5" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="nyC-pP-yHs">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="nyC-pP-yHs">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -517,8 +517,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="03e-4T-yIF"/>
-        <segue reference="DEI-EP-mW9"/>
-        <segue reference="yUx-pu-Qzy"/>
+        <segue reference="5iA-qD-NSp"/>
+        <segue reference="cY2-ym-JaW"/>
+        <segue reference="ZQ3-VP-AWp"/>
     </inferredMetricsTieBreakers>
 </document>
